@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
+    <title>správa user</title>
+
+</head>
+<body>
+<form action="admin.xhtml">
+    <label>správa uživatelů</label>
+    <br/>
+    <label for="login">login:</label>
+    <input type="text" id="login" name="userName"/>
+    <br/>
+    <label for="password">heslo:</label>
+    <input type="password" id="password" name="password"/>
+    <br/>
+    <label for="name">jmeno:</label>
+    <input type="text" id="name" name="name"/>
+    <br/>
+    <label for="lastName">primeni:</label>
+    <input type="text" id="lastName" name="lastName"/>
+    <br/>
+    <label for="telefon">telefon:</label>
+    <input type="text" id="telefon" name="tlefon"/>
+    <br/>
+    <label for="email">email:</label>
+    <label for="email"></label><input type="text" id="email" name="email"/>
+    <br/>
+    <label>role:</label>
+    <br/>
+    <label>reklamace</label>
+    <input type="radio" id="reklamace" name="role" value="rkelamace"/>
+    <label>sklad</label>
+    <input type="radio" id="sklad" name="role" value="sklad"/>
+    <label>admin</label>
+     <input type="radio" id="admin" name="role" value="admin"/>
+    <br/>
+    <label>akce:</label>
+    <br/>
+    <label>nový user: </label>
+    <input type="radio" id="newUse" name="akce" value="rkelamace"/>
+    <label>změna hesla: </label>
+    <input type="radio" id="newPassword" name="akce" value="rkelamace"/>
+    <label>změna role user:</label>
+    <input type="radio" id="newRole" name="akce" value="rkelamace"/>
+    <br/>
+    <button type="button" id="ok" name="ok"  onclick="function myFunction() {
+        // na vzani na controler
+    }">ok</button>
+    <button type="reset" id="delete" name="delete" >vymaž</button>
+
+
+
+
+</form>
+
+</body>
+</html>

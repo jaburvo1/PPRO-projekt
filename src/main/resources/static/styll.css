@@ -1,0 +1,39 @@
+body{
+    background-color: aqua;
+}
+header{
+    position: fixed;
+    top: 0px;
+    height: 10px;
+    font-weight: normal;
+}
+form{
+    background-color: aquamarine;
+    position: relative;
+    top: 20px;
+    width: auto;
+    height: auto;
+    text-decoration-color: black;
+}
+ .complaintReject {
+     position: relative;
+     reight: 10;
+     background-color: indianred;
+     width: auto;
+     height: auto;
+
+ }
+
+.complaintSettled {
+    position: relative;
+    width: auto;
+    height: auto;
+    background-color: chartreuse;
+}
+.complaintAccepted {
+    position: relative;
+    left: 10px;
+    width: auto;
+    height: auto;
+    background-color: cadetblue;
+}

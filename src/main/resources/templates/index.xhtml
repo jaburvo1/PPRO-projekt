@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href="\src\main\resources\static\styll.css" />
+    <title>login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script>
+        function login() {
+            document.getElementById("emailUser").value = "ok";
+            // zde bude volat post login v controleru
+        }
+    </script>
+</head>
+<body>
+<form action="">
+    <label>přihlášní</label>
+    <label for="emailUser"></label>
+    <input type="text" id ="emailUser" name ="userEeamil"/>
+    <br></br>
+    <label for="password"> heslo: </label>
+    <input type="password" id ="password" name ="userPassword"/>
+    <br></br>
+    <input type="button" id="ok" name="ok" value="ok" onclick="login()"></input>
+    <button type="reset" value="vymaž">vymaž</button>
+</form>
+</body>
+</html>
