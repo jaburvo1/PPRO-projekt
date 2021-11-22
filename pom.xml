@@ -144,15 +144,27 @@
                 <native-buildtools.version>0.9.4</native-buildtools.version>
             </properties>
             <dependencies>
+                <!--<dependency>
+                    <groupId>com.oracle.database.jdbc</groupId>
+                    <artifactId>ojdbc8</artifactId>-->
+                    <!--<version>19.3.0.0</version>-->
+                    <!--<version>21.1.1.0</version>
+                </dependency>-->
                 <dependency>
                     <groupId>com.oracle.database.jdbc</groupId>
                     <artifactId>ojdbc8</artifactId>
-                    <!--<version>19.3.0.0</version>-->
-                    <version>21.1.1.0</version>
-                    
-
-
+                    <scope>runtime</scope>
                 </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-jdbc</artifactId>
+                </dependency>
+                <dependency>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-data-jpa</artifactId>
+                </dependency>
+
+
             </dependencies>
             <build>
                 <plugins>
