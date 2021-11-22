@@ -1,13 +1,13 @@
 package entity;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
 
 // reklamace entita
-@Entity
+@EntityScan
 @Table( "Reklamace")
 public class Complaint {
     @Id

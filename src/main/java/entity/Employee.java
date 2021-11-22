@@ -1,9 +1,9 @@
 package entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.data.annotation.Id;
 
-@Entity
+@EntityScan
 public class Employee {
     @Id
     private int IDEmployee;
