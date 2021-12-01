@@ -3,7 +3,7 @@ body{
 }
 header{
     position: fixed;
-    top: 0px;
+    top: 0;
     height: 10px;
     font-weight: normal;
 }
@@ -15,9 +15,16 @@ form{
     height: auto;
     text-decoration-color: black;
 }
+ul{
+    background-color: aquamarine;
+    position: relative;
+    width: auto;
+    height: auto;
+
+}
  .complaintReject {
      position: relative;
-     reight: 10;
+     right: 10px;
      background-color: indianred;
      width: auto;
      height: auto;

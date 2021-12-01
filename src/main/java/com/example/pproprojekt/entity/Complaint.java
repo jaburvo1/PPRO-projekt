@@ -1,4 +1,4 @@
-package entity;
+package com.example.pproprojekt.entity;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;

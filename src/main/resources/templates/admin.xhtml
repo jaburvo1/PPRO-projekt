@@ -9,7 +9,7 @@
 
 </head>
 <body>
-<form action="admin.xhtml">
+<form action="/login/#/editUser" method="post">
     <label>správa uživatelů</label>
     <br/>
     <label for="login">login:</label>
@@ -18,8 +18,8 @@
     <label for="password">heslo:</label>
     <input type="password" id="password" name="password"/>
     <br/>
-    <label for="name">jmeno:</label>
-    <input type="text" id="name" name="name"/>
+    <label for="firstName">jmeno:</label>
+    <input type="text" id="firstName" name="firstName"/>
     <br/>
     <label for="lastName">primeni:</label>
     <input type="text" id="lastName" name="lastName"/>
@@ -48,9 +48,7 @@
     <label>změna role user:</label>
     <input type="radio" id="newRole" name="akce" value="rkelamace"/>
     <br/>
-    <button type="button" id="ok" name="ok"  onclick="function myFunction() {
-        // na vzani na controler
-    }">ok</button>
+    <button type="submit" id="ok" name="ok">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
 
 
