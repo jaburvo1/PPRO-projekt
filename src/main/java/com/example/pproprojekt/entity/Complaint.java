@@ -13,16 +13,68 @@ public class Complaint {
     @Id
     private int id;
     @Column
-    private String nameCmplaint;
+    private String codeCmplaint;
     private String deiscription;
+    private int client;
+    private String criateDate;
     private int stav;
+    private int employId;
+    private String infoComplaint;
+    private String settlementDate;
 
-    public String getNameCmplaint() {
-        return nameCmplaint;
+    public Complaint() {
     }
 
-    public void setNameCmplaint(String nameCmplaint) {
-        this.nameCmplaint = nameCmplaint;
+    public String getInfoComplaint() {
+        return infoComplaint;
+    }
+
+    public void setInfoComplaint(String infoComplaint) {
+        this.infoComplaint = infoComplaint;
+    }
+
+    public String getSettlementDate() {
+        return settlementDate;
+    }
+
+    public void setSettlementDate(String settlementDate) {
+        this.settlementDate = settlementDate;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getClient() {
+        return client;
+    }
+
+    public void setClient(int client) {
+        this.client = client;
+    }
+
+    public String getCriateDate() {
+        return criateDate;
+    }
+
+    public void setCriateDate(String criateDate) {
+        this.criateDate = criateDate;
+    }
+
+    public int getEmployId() {
+        return employId;
+    }
+
+    public void setEmployId(int employId) {
+        this.employId = employId;
+    }
+
+    public String getCodeCmplaint() {
+        return codeCmplaint;
+    }
+
+    public void setCodeCmplaint(String codeCmplaint) {
+        this.codeCmplaint = codeCmplaint;
     }
 
     public String getDeiscription() {

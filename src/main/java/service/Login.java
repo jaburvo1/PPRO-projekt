@@ -2,52 +2,44 @@ package service;
 
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.stereotype.Service;
-import repozitory.EmployeeRepository;
+import repozitory.EmploeeyRepository;
 
-import java.util.List;
 import javax.persistence.*;
 
 import static javax.persistence.Persistence.createEntityManagerFactory;
 
 @Service
 public class Login {
-    private final EmployeeRepository repozitoryEm;
+    private EmploeeyRepository repozitoryEm;
 
     private int idUser;
     private int role;
     private String userEmail;
     private String password;
     private Employee employee;
+    private EmploeeyRepository emploeeyDao;
 
     private EntityManager entityManager;
 
 
-    public Login(String userEmail, String password, EmployeeRepository repository) {
+    public Login(String userEmail, String password) {
         this.userEmail = userEmail;
         this.password = password;
-        this.repozitoryEm = repository;
+
 
 
     }
 
+    public Login() {
+        repozitoryEm = new EmploeeyRepository();
 
-
-    private Employee getAllBy() {
-        List<Employee> pom = repozitoryEm.findAll();
-        for (Employee em : pom) {
-            if ((em.getEmail().equals(userEmail)) && (em.getPassword().equals(password))) {
-                return em;
-            }
-
-        }
-        return null;
     }
-
     public Employee getLogin(String email, String password) {
         this.userEmail=email;
         this.password=password;
+        emploeeyDao = new EmploeeyRepository();
 
-        Employee em = getAllBy();
+        Employee em = emploeeyDao.getEmploeeLogin(email, password) ;
         if(em!=null) {
             return em;
         }
