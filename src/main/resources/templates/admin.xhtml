@@ -6,10 +6,74 @@
 <head>
     <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
     <title>správa user</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+    <script type="javascript">
+        import axios from "axios";
+        function submit(){
+            const typAkce = $(".akceTyp:checked").val();
+            if(typAkce==1){
+                novyUzivatel();
+            }
+            else {
+                if(typAkce==2){
 
+                    editHeslo();
+                }
+                else {
+                    editroleUser();
+                }
+            }
+            reload();
+        }
+        async function   novyUzivatel(){
+            const role = $(".role:checked").val();
+
+            const data = {
+                userName: document.getElementById("login").value,
+                password: document.getElementById("password").value,
+                firstName: document.getElementById("firstName").value,
+                lastName: document.getElementById("lastName").value,
+                telefon: document.getElementById("telefon").value,
+                eamil: document.getElementById("email").value,
+                role: role
+
+
+
+            };
+            const response = await axios.post('https://localhost:8080/novyUzivatel', data);
+            const user =response.data.login;
+        }
+
+        async function editHeslo(){
+
+            const data = {
+                userName: document.getElementById("login").value,
+                password: document.getElementById("password").value,
+            };
+            const response = await axios.patch('https://localhost:8080/editPassword', data);
+            const user =response.data.login;
+
+        }
+
+        async function editRoleUser(){
+            const role = $(".role:checked").val();
+            const data = {
+                userName: document.getElementById("login").value,
+                role: role
+            };
+            const response = await axios.patch('https://localhost:8080/editUserRole', data);
+            const user =response.data.login;
+
+        }
+
+       async function reload(){
+           const result = await axios.get("http://localhost:8080/admin");
+           console.log(result);
+       }
+    </script>
 </head>
 <body>
-<form action="/login/#/editUser" method="post">
+<form action="submit()">
     <label>správa uživatelů</label>
     <br/>
     <label for="login">login:</label>
@@ -33,22 +97,22 @@
     <label>role:</label>
     <br/>
     <label>reklamace</label>
-    <input type="radio" id="reklamace" name="role" value="rkelamace"/>
+    <input type="radio" id="reklamace" name="role" class="role" value="rkelamace"/>
     <label>sklad</label>
-    <input type="radio" id="sklad" name="role" value="sklad"/>
+    <input type="radio" id="sklad" name="role" class="role" value="sklad"/>
     <label>admin</label>
-     <input type="radio" id="admin" name="role" value="admin"/>
+     <input type="radio" id="admin" name="role" class="role" value="admin"/>
     <br/>
     <label>akce:</label>
     <br/>
     <label>nový user: </label>
-    <input type="radio" id="newUse" name="akce" value="rkelamace"/>
+    <input type="radio" id="newUse" name="akce" class="akceTyp" value="rkelamace"/>
     <label>změna hesla: </label>
-    <input type="radio" id="newPassword" name="akce" value="rkelamace"/>
+    <input type="radio" id="newPassword" name="akceTyp" class="akce" value="rkelamace"/>
     <label>změna role user:</label>
-    <input type="radio" id="newRole" name="akce" value="rkelamace"/>
+    <input type="radio" id="edtiRole" name="akceTyp" class="akce" value="rkelamace"/>
     <br/>
-    <button type="submit" id="ok" name="ok">ok</button>
+    <button type="submit" id="ok" name="ok" onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
 
 

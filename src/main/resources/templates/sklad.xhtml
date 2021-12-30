@@ -6,55 +6,101 @@
 <head>
     <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
     <title>Sklad</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+    <script type="javascript">
+        import axios from "axios";
+        function submit(){
+            const typAkce = $(".skladDil:checked").val();
+            if(typAkce==1){
+                novyDill();
+            }
+            else {
+                if(typAkce==2){
+
+                    naskladniDil();
+                }
+                else {
+                    vyskladniDil();
+                }
+            }
+            reload();
+        }
+        async function   novyDill(){
+            const data = {
+                nazevDilu: document.getElementById("nazevDilu").value,
+                druhDilu: document.getElementById("druhDilu").value,
+                typDilu: document.getElementById("typDilu").value,
+                parametryDilu: document.getElementById("parametryDilu").value,
+                vyrobceDilu: document.getElementById("vyrobceDilu").value,
+                pocetKusu: document.getElementById("pocetKusu").value,
+
+            };
+            const response = await axios.post('https://localhost:8080/addItem', data);
+            const dil =response.data.nazevDilu;
+        }
+
+        async function naskladniDil(){
+
+            const data = {
+                nazevDilu: document.getElementById("nazevDilu").value,
+                pocetKusu: document.getElementById("pocetKusu").value,
+            };
+            const response = await axios.patch('https://localhost:8080/addItemPiece', data);
+            const dil =response.data.nazevDilu;
+
+        }
+
+        async function vyskladniDil(){
+            const data = {
+                nazevDilu: document.getElementById("nazevDilu").value,
+                pocetKusu: document.getElementById("pocetKusu").value,
+            };
+            const response = await axios.patch('https://localhost:8080/removeItemPiece', data);
+            const dil =response.data.nazevDilu;
+
+        }
+
+        async function reload(){
+            const result = await axios.get("http://localhost:8080/sklad");
+            console.log(result);
+        }
+
+    </script>
 </head>
 <body>
 
-<form action="/login/#/editUser" method="post">
+<form action="submit()">
     <label>správa uživatelů</label>
     <br/>
-    <label for="login">login:</label>
-    <input type="text" id="login" name="userName"/>
+    <label for="nazevDilu">nazev dilu:</label>
+    <input type="text" id="nazevDilu" name="nazevDilu"/>
     <br/>
-    <label for="password">heslo:</label>
-    <input type="password" id="password" name="password"/>
+    <label for="druhDilu">druh dilu:</label>
+    <input type="text" id="druhDilu" name="druhDilu"/>
     <br/>
-    <label for="firstName">jmeno:</label>
-    <input type="text" id="firstName" name="firstName"/>
+    <label for="typDilu">typ dilu:</label>
+    <input type="text" id="typDilu" name="typDilu"/>
     <br/>
-    <label for="lastName">primeni:</label>
-    <input type="text" id="lastName" name="lastName"/>
+    <label for="parametryDilu">parametry dilu:</label>
+    <input type="text" id="parametryDilu" name="parametryDilu"/>
     <br/>
-    <label for="telefon">telefon:</label>
-    <input type="text" id="telefon" name="tlefon"/>
+    <label for="vyrobceDilu">vyrobce dilu:</label>
+    <input type="text" id="vyrobceDilu" name="vyrobceDilu"/>
     <br/>
-    <label for="email">email:</label>
-    <label for="email"></label><input type="text" id="email" name="email"/>
-    <br/>
-    <label>role:</label>
-    <br/>
-    <label>reklamace</label>
-    <input type="radio" id="reklamace" name="role" value="rkelamace"/>
-    <label>sklad</label>
-    <input type="radio" id="sklad" name="role" value="sklad"/>
-    <label>admin</label>
-    <input type="radio" id="admin" name="role" value="admin"/>
+    <label for="pocetKusu">pocet kusu:</label>
+    <label for="pocetKusu"></label><input type="text" id="pocetKusu" name="pocetKusu"/>
     <br/>
     <label>akce:</label>
     <br/>
-    <label>nový user: </label>
-    <input type="radio" id="newUse" name="akce" value="rkelamace"/>
-    <label>změna hesla: </label>
-    <input type="radio" id="newPassword" name="akce" value="rkelamace"/>
-    <label>změna role user:</label>
-    <input type="radio" id="newRole" name="akce" value="rkelamace"/>
+    <label>novyDil</label>
+    <input type="radio" id="novyDil" name="skladDil" class="skladDil" value="novyDil"/>
+    <label>naskladnit</label>
+    <input type="radio" id="naskladnitDil" name="skladDil" class="skladDil" value="naskladnit"/>
+    <label>vyskladnit</label>
+    <input type="radio" id="vyskladnitDil" name="skladDil" class="skladDil" value="vyskladnit"/>
     <br/>
     <button type="submit" id="ok" name="ok">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
-
-
-
-
 </form>
-
 </body>
 </html>

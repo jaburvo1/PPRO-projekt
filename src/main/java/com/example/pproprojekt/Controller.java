@@ -170,7 +170,7 @@ public class Controller {
                                      @RequestParam("datumVyreseni") String settlementDate, @RequestParam("stavReklamace") int stav
     ) {
 
-        model.addAttribute("addReklamace", complaint.edit(stav, userId, infoCmoplaint, settlementDate, idComplaint));
+        model.addAttribute("editReklamace", complaint.edit(stav, userId, infoCmoplaint, settlementDate, idComplaint));
 
         modelAndView = complaintView();
         return modelAndView;
