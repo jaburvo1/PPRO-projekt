@@ -155,8 +155,8 @@ public class Controller {
     }
 
     @RequestMapping(value = "/novaRekalamace", method = RequestMethod.POST)
-    public ModelAndView addComplaint(Model model, @RequestParam("kódReklamace") String codeComplaint, @RequestParam("popisReklamace") String description,
-                                     @RequestParam("datumVytvoření") String criateDate, @RequestParam("client") int client, @RequestParam("stavReklamace") int stav
+    public ModelAndView addComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("popisReklamace") String description,
+                                     @RequestParam("datumVytvorení") String criateDate, @RequestParam("client") int client, @RequestParam("stavReklamace") int stav
     ) {
 
         model.addAttribute("addReklamace", complaint.add(codeComplaint, description, criateDate, client, stav, userId));

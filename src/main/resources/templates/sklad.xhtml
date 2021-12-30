@@ -9,5 +9,52 @@
 </head>
 <body>
 
+<form action="/login/#/editUser" method="post">
+    <label>správa uživatelů</label>
+    <br/>
+    <label for="login">login:</label>
+    <input type="text" id="login" name="userName"/>
+    <br/>
+    <label for="password">heslo:</label>
+    <input type="password" id="password" name="password"/>
+    <br/>
+    <label for="firstName">jmeno:</label>
+    <input type="text" id="firstName" name="firstName"/>
+    <br/>
+    <label for="lastName">primeni:</label>
+    <input type="text" id="lastName" name="lastName"/>
+    <br/>
+    <label for="telefon">telefon:</label>
+    <input type="text" id="telefon" name="tlefon"/>
+    <br/>
+    <label for="email">email:</label>
+    <label for="email"></label><input type="text" id="email" name="email"/>
+    <br/>
+    <label>role:</label>
+    <br/>
+    <label>reklamace</label>
+    <input type="radio" id="reklamace" name="role" value="rkelamace"/>
+    <label>sklad</label>
+    <input type="radio" id="sklad" name="role" value="sklad"/>
+    <label>admin</label>
+    <input type="radio" id="admin" name="role" value="admin"/>
+    <br/>
+    <label>akce:</label>
+    <br/>
+    <label>nový user: </label>
+    <input type="radio" id="newUse" name="akce" value="rkelamace"/>
+    <label>změna hesla: </label>
+    <input type="radio" id="newPassword" name="akce" value="rkelamace"/>
+    <label>změna role user:</label>
+    <input type="radio" id="newRole" name="akce" value="rkelamace"/>
+    <br/>
+    <button type="submit" id="ok" name="ok">ok</button>
+    <button type="reset" id="delete" name="delete" >vymaž</button>
+
+
+
+
+</form>
+
 </body>
 </html>

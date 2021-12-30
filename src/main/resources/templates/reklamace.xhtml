@@ -4,10 +4,102 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
+    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs"/>
     <title>Reklamace</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+    <script type="javascript">
+        import axios from "axios";
+        function submit() {
+
+
+            const typAkce = $(".typAkce:checked").val();
+            if(typAkce==1){
+
+                addReklamace();
+
+            }
+            else{
+
+            }
+
+        }
+        async function   addReklamace(){
+            var stav = $(".stav:checked").val();
+            var klient = $(".klient:checked").val();
+            const data = { kodReklamace: document.getElementById("kodReklamace").value,
+                popisReklamace: document.getElementById("popisReklamace").value,
+                datumVytvorení: document.getElementById("datumVytvoření").value,
+                client: klient,
+                stavReklamace: stav
+
+            };
+            const response = await axios.post('https://localhost:8080/novaRekalamace', data);
+            const kodReklamace =response.data.kodReklamace;
+        }
+        async function editRekalamce(){
+
+            const data = { kodReklamace: document.getElementById("kodReklamace").value,
+                infoReklamace: document.getElementById("infoReklamace").value,
+                datumVyreseni: document.getElementById("datumVyreseni").value,
+                stavReklamace: stav
+
+            };
+            const response = await axios.post('https://localhost:8080/editRekalamace', data);
+            const kodReklamace =response.data.kodReklamace;
+        }
+
+
+    </script>
 </head>
 <body>
+<form action="submit()">
+    <label>správa uživatelů</label>
+    <br/>
+    <label for="kodReklamace">kod reklamace:</label>
+    <input type="text" id="kodReklamace" name="kodReklamace"/>
+    <br/>
+    <label for="popisReklamace">popis</label>
+    <input type="text" id="popisReklamace" name="popisReklamace" />
+    <br/>
+    <label for="infoReklamace">infromace o reklamaci</label>
+    <input type="text" id="infoReklamace" name="infoReklamace"/>
+    <br/>
+    <label for="datumVytvoreni">dastum vytvoreni</label>
+    <input type="text" id="datumVytvoreni" name="datumVytvoreni"/>
+    <br/>
+    <label for="datumVyreseni">datum vyreseni:</label>
+    <input type="text" id="datumVyreseni" name="datumVyreseni"/>
+    <br/>
+    <label>stav:</label>
+    <br/>
+    <label>prijato: </label>
+    <input type="radio" id="stavPrijato" name="stavReklamace" class="stav" value="prijato"/>
+    <label>vyrizeno: </label>
+    <input type="radio" id="stavVyrizeno" name="stavReklamace" class="stav" value="vyrizeno"/>
+    <label>zamitnuto:</label>
+    <input type="radio" id="stavZmitnuto" name="stavReklamace" class="stav" value="zamitnuto"/>
+    <br/>
+    <label>typ akce:</label>
+    <br/>
+    <label>nova reklamace</label>
+    <input type="radio" id="addreklamace" name="typAkce" class="typAkce" value="rkelamace"/>
+    <label>uprava stavu reklamace</label>
+    <input type="radio" id="editReklamace" name="typAkce"  class="typAkce" value="sklad"/>
+
+    <br/>
+    <label>klient:</label>
+    <br/>
+    <label>klient1</label>
+    <input type="radio" id="klient1" name="klient1" class="klient" value="1"/>
+    <label>klient2</label>
+    <input type="radio" id="klient2" name="klient2"  class="klient" value="2"/>
+    <label>klient3</label>
+    <input type="radio" id="klient3" name="klient3"  class="klient" value="3"/>
+    <br/>
+    <button type="submit" id="ok" name="ok" onclick="submit()">ok</button>
+    <button type="reset" id="delete" name="delete">vymaž</button>
+
+</form>
 
 </body>
 </html>

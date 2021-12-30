@@ -12,7 +12,7 @@ public class PproProjektApplication {
         SpringApplication.run(PproProjektApplication.class, args);
 
     }
-    public WebMvcConfigurer corsConfigure(){
+    /*public WebMvcConfigurer corsConfigure(){
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
@@ -22,6 +22,6 @@ public class PproProjektApplication {
 
 
 
-    };
+    };*/
 
 }
