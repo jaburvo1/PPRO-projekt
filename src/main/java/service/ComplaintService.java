@@ -1,8 +1,10 @@
 package service;
 
 import com.example.pproprojekt.entity.Complaint;
+import org.springframework.stereotype.Service;
 import repozitory.ComplaintRepository;
 
+@Service
 public class ComplaintService {
     private Complaint complaint;
     private ComplaintRepository complaintRepo = new ComplaintRepository();

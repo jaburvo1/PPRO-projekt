@@ -1,5 +1,7 @@
 package com.example.pproprojekt.entity;
 
+import org.springframework.boot.autoconfigure.domain.EntityScan;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -10,13 +12,22 @@ public class Employee {
     @javax.persistence.Id
     @Column(name = "ZAMESTNANCI_ID", nullable = false)
     private Long IDEmployee;;
+    @Column(name = "UZIVATEL")
     private String userName;
+    @Column(name = "PRIJMENI")
     private String lastName;
+    @Column(name = "JMENO")
     private String firstName;
+    @Column(name = "EMAIL")
     private String email;
+    @Column(name = "HESLO")
     private String password;
+    @Column(name = "TELEFON")
     private String telefon;
+    @Column(name = "ROLE_ID")
     private  int role;
+    @Column(name = "ADRESA_ID")
+    private int adresaId =1;
 
     public Employee() {
 

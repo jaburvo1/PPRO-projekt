@@ -2,25 +2,37 @@ package com.example.pproprojekt.entity;
 
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
 
 
 // reklamace entita
-@EntityScan
-@Table( "Reklamace")
+@Entity
+@Table("REKALAMACE")
 public class Complaint {
-    @Id
-    private int id;
-    @Column
+    @javax.persistence.Id
+    @Column(name = "REKALAMACE_ID", nullable = false)
+    private Long id;
+    @Column(name = "KOD_REKLAMACE")
     private String codeCmplaint;
+    @Column(name = "POPIS_PROBLEMU")
     private String deiscription;
+    @Column(name = "KLIENTI_ID")
     private int client;
+    @Column(name = "DATUM_VYTVORENI")
     private String criateDate;
+    @Column(name = "STAV_ID")
     private int stav;
+    @Column(name = "ZAMESTNANCI_ID")
     private int employId;
+    @Column(name = "INFORMACE_REKLAMACE")
     private String infoComplaint;
+    @Column(name = "DATUM_VYRESENI")
     private String settlementDate;
+    @Column(name = "SKLADDILU_ID")
+    private int skladId;
 
     public Complaint() {
     }
@@ -41,7 +53,7 @@ public class Complaint {
         this.settlementDate = settlementDate;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -93,7 +105,7 @@ public class Complaint {
         this.stav = stav;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 }
