@@ -1,6 +1,10 @@
 package repozitory;
 
 import com.example.pproprojekt.entity.Complaint;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+/*
+import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -230,5 +234,9 @@ public class ComplaintRepository {
         entityManager.merge(complaint); // update do tabulky reklamce
 
     }
+
+}
+*/
+public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
 }

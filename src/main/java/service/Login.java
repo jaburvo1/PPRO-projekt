@@ -6,6 +6,9 @@ import repozitory.EmploeeyRepository;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.Persistence.createEntityManagerFactory;
 
 @Service
@@ -20,6 +23,7 @@ public class Login {
     private EmploeeyRepository emploeeyDao;
 
     private EntityManager entityManager;
+    private List<Employee> listEmployee;
 
 
     public Login(String userEmail, String password) {
@@ -31,22 +35,22 @@ public class Login {
     }
 
     public Login() {
-        repozitoryEm = new EmploeeyRepository();
-
     }
-    public Employee getLogin(String email, String password) {
-        this.userEmail=email;
-        this.password=password;
-        emploeeyDao = new EmploeeyRepository();
 
-        Employee em = emploeeyDao.getEmploeeLogin(email, password) ;
-        if(em!=null) {
-            return em;
+    public Login(EmploeeyRepository repozitoryEm) {
+        this.repozitoryEm = repozitoryEm;
+    }
+
+    public Employee login(String email, String password) {
+        listEmployee = new ArrayList<>();
+        for (Employee em: listEmployee) {
+            if ((email.equals(em.getEmail())) && (password.equals(em.getPassword()))) {
+                employee = em;
+            } else {
+                System.out.println("chyne prihalsovaci udaje");
+            }
         }
-        else {
-            em.setIDEmployee(-1);
-            return em;
-        }
+        return employee;
     }
 }
 

@@ -1,11 +1,9 @@
 package repozitory;
 
-import com.example.pproprojekt.entity.Employee;
+import com.example.pproprojekt.entity.Depot;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-/*
-import com.example.pproprojekt.entity.Employee;
-import org.springframework.data.jdbc.repository.query.Modifying;
+/*import com.example.pproprojekt.entity.Depot;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,12 +11,12 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.Metamodel;
-import java.util.List;
 import java.util.Map;
 
 @Repository
 @Transactional
-public class EmploeeyRepository {
+public class DepotRepozitory {
+    private Depot depot;
     @PersistenceContext
     private EntityManager entityManager = new EntityManager() {
         @Override
@@ -222,38 +220,22 @@ public class EmploeeyRepository {
         }
     };
 
-    public void add(final Employee employee) {
-        entityManager.persist(employee);
+    public void addPart(final Depot part) {
+        entityManager.persist(part);
     }
 
-    public Employee getEmploeeLogin(String email, String password) {
-        Employee em= new Employee();
-        List<Employee> employees  = entityManager.createQuery("SELECT em.role  FROM Employee em WHERE em.email LIKE :email AND em.password LIKE :password"  ,
-                Employee.class).setParameter("email", email).setParameter("password", password).getResultList();
+    public Object findByName(String namePart){
+        Object part =null;
 
-
-        Employee emploeey =employees.get(0);
-        return  emploeey;
+        return part;
     }
 
-    public Employee getEmploeeByEmail(String email, String password) {
-        List<Employee> employees  = entityManager.createQuery("SELECT em FROM Employee em WHERE em.email LIKE :email"  ,
-                Employee.class).setParameter("email", email).getResultList();
-
-
-        Employee emploeey =employees.get(0);
-        return  emploeey;
-    }
-    public void updatePasswprd(String email, String newPassword) {
-
-        entityManager.createQuery("UPDATE Employee em SET em.password=:newPassword WHERE em.email = :email", Employee.class).setParameter("newPassword", newPassword)
-                .setParameter("email", email).executeUpdate();
+    public void addPiecePartById(long id, int countPart, Depot depot){
+        this.depot=depot;
 
     }
-
+ */
+public interface DepotRepozitory extends JpaRepository<Depot, Long> {
 
 }
-*/
-public interface EmploeeyRepository  extends JpaRepository<Employee, Long> {
 
-}

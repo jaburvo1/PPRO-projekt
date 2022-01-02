@@ -17,7 +17,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 @EnableWebSecurity
 
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-   /* @Override
+   @Override
     protected void configure(HttpSecurity http) throws Exception{
         http
                 .csrf().disable()
@@ -29,8 +29,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         .mvcMatchers("/").permitAll()
                         .mvcMatchers("/login").permitAll()
                         .anyRequest().denyAll()
+
                 )
                 .httpBasic(withDefaults());
+
     }
     @Bean
     public UserDetailsService users() {
@@ -48,5 +50,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         return new InMemoryUserDetailsManager(depotUser, admin, complaintUser);
     }
-*/
+
 }

@@ -42,7 +42,7 @@ public class Controller {
         login = new Login();
 
         System.out.println(email);
-        login.getLogin(email, password);
+        login.login(email, password);
 
 
         ///login(userEamil, userPassword);
@@ -166,11 +166,12 @@ public class Controller {
     }
 
     @RequestMapping(value = "/editRekalamace", method = RequestMethod.PATCH)
-    public ModelAndView ediComplaint(Model model, @RequestParam("kodReklamace") int idComplaint, @RequestParam("infoReklamace") String infoCmoplaint,
+    public ModelAndView ediComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("infoReklamace") String infoCmoplaint,
                                      @RequestParam("datumVyreseni") String settlementDate, @RequestParam("stavReklamace") int stav
     ) {
+        System.out.println("kodReklamace: "+codeComplaint);
 
-        model.addAttribute("editReklamace", complaint.edit(stav, userId, infoCmoplaint, settlementDate, idComplaint));
+        model.addAttribute("editReklamace", complaint.edit(codeComplaint,stav, userId, infoCmoplaint, settlementDate));
 
         modelAndView = complaintView();
         return modelAndView;
@@ -202,6 +203,7 @@ public class Controller {
     @RequestMapping(value = "/removeItemPiece", method = RequestMethod.PATCH)
     public ModelAndView removeItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) {
 
+        System.out.println("nazevDilu: "+namePart);
         model.addAttribute("removekusDilu", depot.removePiecePart(namePart, countPart));
 
         modelAndView = depotView();

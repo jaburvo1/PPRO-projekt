@@ -4,16 +4,24 @@ import com.example.pproprojekt.entity.Complaint;
 import org.springframework.stereotype.Service;
 import repozitory.ComplaintRepository;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ComplaintService {
     private Complaint complaint;
-    private ComplaintRepository complaintRepo = new ComplaintRepository();
+    private ComplaintRepository complaintRepo;
+    private List<Complaint> listCoplaint;
 
     public ComplaintService() {
     }
 
+    public ComplaintService(ComplaintRepository complaintRepo) {
+        this.complaintRepo = complaintRepo;
+    }
 
     public Object add(String codeComplaint, String description, String criateDate, int client, int stav, int employeId) {
+        System.out.println("kodReklamace: "+codeComplaint+"stav: "+stav);
         complaint =new Complaint();
         complaint.setDeiscription(description);
         complaint.setClient(client);
@@ -21,43 +29,29 @@ public class ComplaintService {
         complaint.setCriateDate(criateDate);
         complaint.setEmployId(employeId);
         complaint.setStav(stav);
-        addCompalintdb();
+        complaintRepo.save(complaint);
         System.out.println("ok");
         return complaint;
 
     }
 
-    public Object edit(int stav, int employeId, String infoComplaint, String settlementDate, int id){
-        complaint = findCompalintdb(id);
-        System.out.println("ok");
-        complaint.setStav(stav);
+    public Object edit(String codeComplaint, int stav, int employeId, String infoComplaint, String settlementDate){
+        listCoplaint= new ArrayList<>();
+        for (Complaint complaint:listCoplaint) {
+            if(codeComplaint.equals(complaint.getCodeCmplaint())){
+                this.complaint=complaint;
+            }
+
+        }
+        complaintRepo.delete(complaint);
         complaint.setInfoComplaint(infoComplaint);
+        complaint.setStav(stav);
         complaint.setEmployId(employeId);
         complaint.setSettlementDate(settlementDate);
-        if(id == complaint.getId()){
-            editCompalintdb();
-        }
-        else{
-            System.out.println("spatne id rekalamce");
-        }
+        complaintRepo.save(complaint);
 
 
         return complaint;
 
     }
-
-    private void addCompalintdb(){
-        complaintRepo.add(complaint);
-
-
-    }
-    private Complaint findCompalintdb(int id){
-       complaint = (Complaint) complaintRepo.findById(id);
-        return complaint;
-    }
-
-    private void editCompalintdb(){
-        complaintRepo.edit(complaint);
-    }
-
 }
