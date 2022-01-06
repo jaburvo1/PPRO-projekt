@@ -13,7 +13,7 @@ import static javax.persistence.Persistence.createEntityManagerFactory;
 
 @Service
 public class Login {
-    private EmploeeyRepository repozitoryEm;
+    private EmploeeyRepository emploeeyRepo;
 
     private int idUser;
     private int role;
@@ -37,12 +37,10 @@ public class Login {
     public Login() {
     }
 
-    public Login(EmploeeyRepository repozitoryEm) {
-        this.repozitoryEm = repozitoryEm;
-    }
 
     public Employee login(String email, String password) {
         listEmployee = new ArrayList<>();
+        listEmployee = emploeeyRepo.find(email, password);
         for (Employee em: listEmployee) {
             if ((email.equals(em.getEmail())) && (password.equals(em.getPassword()))) {
                 employee = em;

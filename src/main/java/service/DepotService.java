@@ -4,13 +4,14 @@ import com.example.pproprojekt.entity.Depot;
 import org.springframework.stereotype.Service;
 import repozitory.ComplaintRepository;
 import repozitory.DepotRepozitory;
+import repozitory.DepotRepozitoryOracel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DepotService {
-    private DepotRepozitory depotRepo;
+    private DepotRepozitory depotRepo = new DepotRepozitoryOracel();
     private Depot depot;
     private List<Depot> listPart;
     public DepotService() {

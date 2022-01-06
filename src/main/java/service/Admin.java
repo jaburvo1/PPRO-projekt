@@ -3,6 +3,7 @@ package service;
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.stereotype.Service;
 import repozitory.EmploeeyRepository;
+import repozitory.EmploeeyRepositoryOracle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +13,7 @@ public class Admin {
 
     private Employee employee;
     private List<Employee> listEmployee;
-    private EmploeeyRepository emploeeyRepo;
+    private EmploeeyRepository emploeeyRepo =new EmploeeyRepositoryOracle();
 
     public Admin() {
     }

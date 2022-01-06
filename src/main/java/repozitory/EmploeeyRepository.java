@@ -3,6 +3,8 @@ package repozitory;
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 /*
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.data.jdbc.repository.query.Modifying;
@@ -256,4 +258,5 @@ public class EmploeeyRepository {
 */
 public interface EmploeeyRepository  extends JpaRepository<Employee, Long> {
 
+    List<Employee> find(String email, String password);
 }

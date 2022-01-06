@@ -3,6 +3,8 @@ package service;
 import com.example.pproprojekt.entity.Complaint;
 import org.springframework.stereotype.Service;
 import repozitory.ComplaintRepository;
+import repozitory.ComplaintRepositoryOracle;
+import repozitory.EmploeeyRepositoryOracle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +12,8 @@ import java.util.List;
 @Service
 public class ComplaintService {
     private Complaint complaint;
-    private ComplaintRepository complaintRepo;
+    private ComplaintRepository complaintRepo = new ComplaintRepositoryOracle();
+
     private List<Complaint> listCoplaint;
 
     public ComplaintService() {
