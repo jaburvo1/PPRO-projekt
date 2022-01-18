@@ -1,7 +1,10 @@
-package repozitory;
+package com.example.pproprojekt.repozitory;
 
 import com.example.pproprojekt.entity.Complaint;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
 
 /*
 import com.example.pproprojekt.entity.Complaint;
@@ -239,4 +242,5 @@ public class ComplaintRepository {
 */
 public interface ComplaintRepository extends JpaRepository<Complaint, Long> {
 
+    //List<Complaint> findAll(int i);
 }

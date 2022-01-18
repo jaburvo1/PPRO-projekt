@@ -1,9 +1,9 @@
-package service;
+package com.example.pproprojekt.service;
 
 import com.example.pproprojekt.entity.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repozitory.EmploeeyRepository;
-import repozitory.EmploeeyRepositoryOracle;
+import com.example.pproprojekt.repozitory.EmploeeyRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +11,13 @@ import java.util.List;
 @Service
 public class Admin {
 
-    private Employee employee;
-    private List<Employee> listEmployee;
-    private EmploeeyRepository emploeeyRepo =new EmploeeyRepositoryOracle();
 
-    public Admin() {
-    }
+
+    private Employee employee = new Employee();
+    private List<Employee> listEmployee;
+    @Autowired
+    private EmploeeyRepository emploeeyRepo;
+
 
     public Admin(EmploeeyRepository emploeeyRepo) {
         this.emploeeyRepo = emploeeyRepo;
@@ -27,7 +28,7 @@ public class Admin {
         System.out.println("login:"+userName+"email: "+email);
         //uložení do db
         Employee pomEmployee = findUserByEmail(email);
-        if(pomEmployee!=null)
+        if(pomEmployee==null)
         {
             employee = new Employee(userName, firstName,lastName,telefon,email,password,newRole);
             emploeeyRepo.save(employee);
@@ -53,15 +54,19 @@ public class Admin {
     }
     private Employee findUserByUseName(String userName)
     {
+        //zde nastava pravděpodobne chby
         listEmployee=new ArrayList<>();
         listEmployee = emploeeyRepo.findAll();
 
         for(Employee em: listEmployee){
-            if(em.getEmail().equals(userName)){
+            if(em.getUserName().equals(userName)){
+                System.out.println(em.getUserName());
+
                 return em;
             }
             else {
                 return null;
+
             }
         }
         return null;
@@ -72,10 +77,12 @@ public class Admin {
         System.out.println("login: "+userName+"role: "+newRole);
 
         employee = findUserByUseName(userName);
+        System.out.println(employee.getUserName());
        if(employee!=null) {
            emploeeyRepo.delete(employee);
            employee.setRole(newRole);
-           emploeeyRepo.save(employee);
+           emploeeyRepo.save(employee);//aktualizae user
+
        }
        else {
            System.out.println("chybne user name");
@@ -84,13 +91,15 @@ public class Admin {
     }
 
     public Object editPassword(String userName, String password) {
-        System.out.println("lgin: "+userName+"heslo: "+ password);
+        System.out.println("login: "+userName+"heslo: "+ password);
 
         employee = findUserByUseName(userName);
+        System.out.println(employee.getUserName());
         if(employee!=null) {
             emploeeyRepo.delete(employee);
             employee.setPassword(password);
             emploeeyRepo.save(employee);
+            //aktualizaci user
         }
         else {
             System.out.println("chybne user name");

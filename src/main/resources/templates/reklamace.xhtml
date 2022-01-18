@@ -7,9 +7,13 @@
     <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs"/>
     <title>Reklamace</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js" type="javascript"></script>
     <script type="javascript">
         import axios from "axios";
+
         function submit() {
+
 
 
             const typAkce = $(".typAkce:checked").val();
@@ -22,7 +26,7 @@
 
             }
 
-        }
+        };
         async function   addReklamace(){
             var stav = $(".stav:checked").val();
             var klient = $(".klient:checked").val();
@@ -33,25 +37,98 @@
                 stavReklamace: stav
 
             };
-            const response = await axios.post('https://localhost:8080/novaRekalamace', data);
-            const kodReklamace =response.data.kodReklamace;
+            //const response = await axios.post('http://localhost:8080/novaRekalamace', data)
+            //const kodReklamace =response.data.kodReklamace;
+            var axios = require('axios');
+            var FormData = require('form-data');
+            var dataBody = new FormData();
+            data.append('kodReklamace', document.getElementById("kodReklamace"));
+            data.append('popisReklamace', document.getElementById("popisReklamace"));
+            data.append('datumVytvorení', document.getElementById("datumVytvoření"));
+            data.append('client', klient);
+            data.append('stavReklamace', stav);
+
+            var config = {
+                method: 'post',
+                url: 'http://localhost:8080/novaRekalamace',
+                headers: {
+                    ...dataBody.getHeaders()
+                },
+                data : dataBody
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
         }
         async function editRekalamce(){
-
+/*
             const data = { kodReklamace: document.getElementById("kodReklamace").value,
                 infoReklamace: document.getElementById("infoReklamace").value,
                 datumVyreseni: document.getElementById("datumVyreseni").value,
                 stavReklamace: stav
+*/
 
+           const  kodReklamace = document.getElementsByClassName("kodReklamace");
+           var stav = $(".stav:checked").val();
+           var axios = require('axios');
+            var FormData = require('form-data');
+            var dataBody = new FormData();
+            data.append('kodReklamace', document.getElementById("kodReklamace"));
+            data.append('infoReklamace', document.getElementById("infoReklamace"));
+            data.append('datumVyreseni', document.getElementById("datumVyreseni"));
+            data.append('stavReklamace', stav);
+
+            var config = {
+                method: 'patch',
+                url: 'http://localhost:8080/editRekalamace',
+                headers: {
+                    ...dataBody.getHeaders()
+                },
+                data : dataBody
             };
-            const response = await axios.patch('https://localhost:8080/editRekalamace', data);
-            const kodReklamace =response.data.kodReklamace;
-        }
 
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        };
+            /*const response = await axios.patch('https://localhost:8080/editRekalamace', { params: {
+                    kodReklamace,
+                    firstname}})
+                .then(response => response.status)
+                .catch(err => console.warn(err));
+           const reklamace =response.data.kodReklamace;
+        };
+*/
+        async function getReklamaceAll() {
+            const {data} = axios.get("http://localhost:8080/reklamace")
+            {
+                return data;
+            }
+        };
+            async function readReklamace(){
+                const data = [getReklamaceAll()];
+                document.write("&lt;ul>");
+                for (let i = 1; i &lt;= data.length; i++)
+                    document.write("&lt;li>" + i);
+                document.write("</ul>");
+            }
 
     </script>
+
+
 </head>
-<body onload="reload()">
+<body>
 <form action="submit()">
     <label>správa uživatelů</label>
     <br/>
@@ -101,5 +178,8 @@
 
 </form>
 
+<ul>
+Výpis Reklamaci:
+</ul>
 </body>
 </html>

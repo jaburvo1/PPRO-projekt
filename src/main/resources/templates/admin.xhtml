@@ -7,10 +7,11 @@
     <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
     <title>správa user</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" type="javascript"></script>
     <script type="javascript">
-        import axios from "axios";
+       // import axios from "axios";
         function submit(){
-            const typAkce = $(".akceTyp:checked").val();
+            const typAkce = $(".akceTyp").val();
             if(typAkce==1){
                 novyUzivatel();
             }
@@ -24,6 +25,7 @@
                 }
             }
             reload();
+            return false
         }
         async function   novyUzivatel(){
             const role = $(".role:checked").val();
@@ -40,7 +42,36 @@
 
 
             };
-            const response = await axios.post('https://localhost:8080/novyUzivatel', data);
+            var axios = require('axios');
+            var FormData = require('form-data');
+            var dataBody = new FormData();
+            dataBody.append('userName', document.getElementById("login") );
+            dataBody.append('password', '54321');
+            dataBody.append('firstName', '444');
+            dataBody.append('lastName', 'tesr');
+            dataBody.append('telefon', '5555');
+            dataBody.append('eamil', '4444');
+            dataBody.append('role', '1');
+
+            var config = {
+                method: 'post',
+                url: 'http://localhost:8080/novyUzivatel',
+                headers: {
+                    'Cookie': 'JSESSIONID=A3656362C9F4F64ACD07E12FCEDE5E2F',
+                    ...dataBody.getHeaders()
+                },
+                data : dataBody
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+
             const user =response.data.login;
         }
 
@@ -73,7 +104,7 @@
     </script>
 </head>
 <body onload="reload()">
-<form action="submit()">
+
     <label>správa uživatelů</label>
     <br/>
     <label for="login">login:</label>
@@ -115,10 +146,6 @@
     <button type="submit" id="ok" name="ok" onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
 
-
-
-
-</form>
 
 </body>
 </html>

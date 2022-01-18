@@ -1,17 +1,17 @@
-package service;
+package com.example.pproprojekt.service;
 
 import com.example.pproprojekt.entity.Depot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repozitory.ComplaintRepository;
-import repozitory.DepotRepozitory;
-import repozitory.DepotRepozitoryOracel;
+import com.example.pproprojekt.repozitory.DepotRepozitory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DepotService {
-    private DepotRepozitory depotRepo = new DepotRepozitoryOracel();
+    @Autowired
+    private DepotRepozitory depotRepo;
     private Depot depot;
     private List<Depot> listPart;
     public DepotService() {
@@ -26,6 +26,7 @@ public class DepotService {
         depot = new Depot(namePart,typePart,subtypePart,parametrsPart,manufacturePart,countPart);
         System.out.println("nazevDilu: " + depot.getNamePart());
         depotRepo.save(depot);
+        System.out.println("ok");
         return depot;
     }
 

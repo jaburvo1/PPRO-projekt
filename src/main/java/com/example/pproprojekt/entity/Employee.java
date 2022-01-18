@@ -11,7 +11,7 @@ import javax.persistence.Table;
 public class Employee {
     @javax.persistence.Id
     @Column(name = "ZAMESTNANCI_ID", nullable = false)
-    private Long IDEmployee;;
+    private long IDEmployee;
     @Column(name = "UZIVATEL")
     private String userName;
     @Column(name = "PRIJMENI")
@@ -27,13 +27,23 @@ public class Employee {
     @Column(name = "ROLE_ID")
     private  int role;
     @Column(name = "ADRESA_ID")
-    private int adresaId =1;
+    private int adresaId =5;
 
     public Employee() {
 
     }
 
+    public int getAdresaId() {
+        return adresaId;
+    }
 
+    public Long getIDEmployee() {
+        return IDEmployee;
+    }
+
+    public void setAdresaId(int adresaId) {
+        this.adresaId = adresaId;
+    }
 
     public Employee(String userName, String firstName, String lastName, String telefon, String email, String password, int newRole) {
         this.userName=userName;

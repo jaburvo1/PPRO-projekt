@@ -1,10 +1,9 @@
-package service;
+package com.example.pproprojekt.service;
 
 import com.example.pproprojekt.entity.Complaint;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repozitory.ComplaintRepository;
-import repozitory.ComplaintRepositoryOracle;
-import repozitory.EmploeeyRepositoryOracle;
+import com.example.pproprojekt.repozitory.ComplaintRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +11,11 @@ import java.util.List;
 @Service
 public class ComplaintService {
     private Complaint complaint;
-    private ComplaintRepository complaintRepo = new ComplaintRepositoryOracle();
+
+    private ComplaintRepository complaintRepo;
 
     private List<Complaint> listCoplaint;
 
-    public ComplaintService() {
-    }
 
     public ComplaintService(ComplaintRepository complaintRepo) {
         this.complaintRepo = complaintRepo;
@@ -55,6 +53,13 @@ public class ComplaintService {
 
 
         return complaint;
+
+    }
+
+    public List<Complaint> getAllComplaint(int stav) {
+        List<Complaint> complains = new ArrayList<>();
+        //complains =complaintRepo.findAll(stav);
+        return complains;
 
     }
 }

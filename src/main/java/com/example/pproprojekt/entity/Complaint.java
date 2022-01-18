@@ -1,20 +1,19 @@
 package com.example.pproprojekt.entity;
 
-import org.springframework.boot.autoconfigure.domain.EntityScan;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.relational.core.mapping.Table;
+
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 
 // reklamace entita
 @Entity
-@Table("REKALAMACE")
+@Table(name = "REKLAMACE")
 public class Complaint {
     @javax.persistence.Id
-    @Column(name = "REKALAMACE_ID", nullable = false)
-    private Long id;
+    @Column(name = "REKLAMACE_ID", nullable = false)
+    private int id;
     @Column(name = "KOD_REKLAMACE")
     private String codeCmplaint;
     @Column(name = "POPIS_PROBLEMU")
@@ -37,6 +36,14 @@ public class Complaint {
     public Complaint() {
     }
 
+    public int getSkladId() {
+        return skladId;
+    }
+
+    public void setSkladId(int skladId) {
+        this.skladId = skladId;
+    }
+
     public String getInfoComplaint() {
         return infoComplaint;
     }
@@ -53,7 +60,7 @@ public class Complaint {
         this.settlementDate = settlementDate;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

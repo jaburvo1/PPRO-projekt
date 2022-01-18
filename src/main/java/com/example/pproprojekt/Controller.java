@@ -1,24 +1,34 @@
 package com.example.pproprojekt;
 
+import com.example.pproprojekt.entity.Complaint;
+import com.example.pproprojekt.entity.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import service.Admin;
-import service.ComplaintService;
-import service.DepotService;
-import service.Login;
+import com.example.pproprojekt.service.Admin;
+import com.example.pproprojekt.service.ComplaintService;
+import com.example.pproprojekt.service.DepotService;
+import com.example.pproprojekt.service.Login;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @RestController
 public class Controller {
-    private Login login = null;
-    private int userId = 0;
+    @Autowired
+    private Login login;
+    private int userId = -1;
     private int role;
+    @Autowired
     private Admin admin;
+    @Autowired
     private DepotService depot;
+    @Autowired
     private ComplaintService complaint;
     private ModelAndView modelAndView;
 
@@ -38,11 +48,8 @@ public class Controller {
 
         System.out.println("ok");
         System.out.println(password);
-
-        login = new Login();
-
         System.out.println(email);
-        login.login(email, password);
+        Employee employee =login.login(email, password);
 
 
         ///login(userEamil, userPassword);
@@ -50,32 +57,34 @@ public class Controller {
         //userId = login.getUserID();
         // role = login.getRole();
         //test data
-        userId = 1;
-        role = 1;
+        userId = Math.round(employee.getIDEmployee());
+        role = employee.getRole();
         //role=2;
         //role=3;
         //role=0;
 
-        if (userId != -1) {
+        if (userId!=-1) {
             ModelAndView modelAndView = new ModelAndView();
             switch (role) {
                 case 1:
 // sesion + map map /admin
-                    admin = new Admin();
+                    //nevyt aret instance
                     modelAndView = adminView();
                     //modelAndView.setViewName("/admin.xhtml");
 
 
                     break;
                 case 2:
-                    //modelAndView.setViewName("/reklamace.xhtml");
-                    complaint = new ComplaintService();
-                    modelAndView = complaintView();
+
+                    modelAndView.setViewName("/sklad.xhtml");
+
+                    //modelAndView = complaintView();
                     break;
                 case 3:
-                    //modelAndView.setViewName("/sklad.xhtml");
-                    depot = new DepotService();
-                    modelAndView = depotView();
+
+                    modelAndView.setViewName("/reklamace.xhtml");
+
+                    //modelAndView = depotView();
                     break;
                 default:
                     //response.getWriter().println("Chybana role uzivatele v db");
@@ -108,8 +117,15 @@ public class Controller {
     @RequestMapping(value = "/reklamace", method = RequestMethod.GET)
     public ModelAndView complaintView() {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("reklamace.xhtml");
 
+        List<Complaint> complaintListAccepted=new ArrayList<>();
+        complaintListAccepted =complaint.getAllComplaint(1);
+        List<Complaint> complaintListSettled=new ArrayList<>();
+        complaintListSettled =complaint.getAllComplaint(2);
+        List<Complaint> complaintListRejected=new ArrayList<>();
+        complaintListRejected =complaint.getAllComplaint(3);
+    modelAndView.setViewName("reklamace.xhtml");
+//vips do html??
         this.modelAndView = modelAndView;
         return modelAndView;
     }

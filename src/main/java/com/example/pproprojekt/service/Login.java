@@ -1,8 +1,9 @@
-package service;
+package com.example.pproprojekt.service;
 
 import com.example.pproprojekt.entity.Employee;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repozitory.EmploeeyRepository;
+import com.example.pproprojekt.repozitory.EmploeeyRepository;
 
 import javax.persistence.*;
 
@@ -13,14 +14,13 @@ import static javax.persistence.Persistence.createEntityManagerFactory;
 
 @Service
 public class Login {
-    private EmploeeyRepository emploeeyRepo;
-
     private int idUser;
     private int role;
     private String userEmail;
     private String password;
     private Employee employee;
-    private EmploeeyRepository emploeeyDao;
+    @Autowired
+    private EmploeeyRepository emploeeyRepo;
 
     private EntityManager entityManager;
     private List<Employee> listEmployee;
@@ -40,7 +40,7 @@ public class Login {
 
     public Employee login(String email, String password) {
         listEmployee = new ArrayList<>();
-        listEmployee = emploeeyRepo.find(email, password);
+        listEmployee = emploeeyRepo.findByEmailAndPassword(email, password);
         for (Employee em: listEmployee) {
             if ((email.equals(em.getEmail())) && (password.equals(em.getPassword()))) {
                 employee = em;
