@@ -64,10 +64,6 @@ public class Admin {
 
                 return em;
             }
-            else {
-                return null;
-
-            }
         }
         return null;
     }
@@ -79,7 +75,7 @@ public class Admin {
         employee = findUserByUseName(userName);
         System.out.println(employee.getUserName());
        if(employee!=null) {
-           emploeeyRepo.delete(employee);
+           //emploeeyRepo.delete(employee);
            employee.setRole(newRole);
            emploeeyRepo.save(employee);//aktualizae user
 
@@ -96,7 +92,7 @@ public class Admin {
         employee = findUserByUseName(userName);
         System.out.println(employee.getUserName());
         if(employee!=null) {
-            emploeeyRepo.delete(employee);
+            //emploeeyRepo.delete(employee);
             employee.setPassword(password);
             emploeeyRepo.save(employee);
             //aktualizaci user

@@ -1,0 +1,6 @@
+Version: "3"
+services:
+  web:
+    build: .
+    ports:
+      - "800:8080"

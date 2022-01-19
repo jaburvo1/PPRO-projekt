@@ -76,4 +76,9 @@ public class DepotService {
         return null;
     }
 
+    public List<Depot> getAllPart() {
+        List<Depot> partsList = new ArrayList<>();
+        partsList = depotRepo.findAll();
+        return partsList;
+    }
 }

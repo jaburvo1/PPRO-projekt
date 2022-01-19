@@ -58,7 +58,13 @@ public class ComplaintService {
 
     public List<Complaint> getAllComplaint(int stav) {
         List<Complaint> complains = new ArrayList<>();
-        //complains =complaintRepo.findAll(stav);
+        complains =complaintRepo.findAll();
+        for(Complaint complaint : complains){
+            if(complaint.getStav()!=stav){
+                complains.remove(complaint);
+            }
+        }
+        System.out.println("ok");
         return complains;
 
     }

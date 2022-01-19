@@ -7,103 +7,194 @@
     <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
     <title>správa user</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
-    <script src="https://unpkg.com/axios/dist/axios.min.js" type="javascript"></script>
-    <script type="javascript">
+    <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
        // import axios from "axios";
         function submit(){
-            const typAkce = $(".akceTyp").val();
-            if(typAkce==1){
+            console.log(document.getElementById("login").value);
+
+
+            if(document.getElementById("newUser").checked==true){
+                console.log("ok");
                 novyUzivatel();
+              }
+              else {
+                  if(document.getElementById("newPassword").checked==true){
+
+                      console.log("ok");
+                      editHeslo();
+                  }
+                  else {
+                      console.log("ok");
+                     editRoleUser()
+                  }
+              }
+             // reload();
+              return false
+        }
+
+        async function   novyUzivatel(){
+            //const role = $(".role:checked").val();
+            var role=0;
+            if(document.getElementById("admin").checked==true){
+                role=1
             }
             else {
-                if(typAkce==2){
-
-                    editHeslo();
+                if(document.getElementById("sklad").checked==true){
+                    role=2;
                 }
-                else {
-                    editRoleUser()
+                else{
+                    if (document.getElementById("reklamace").checked==true){
+                        role=3;
+                    }
+                    else {
+                        role = 0;
+                    }
+                }
+                    }
+
+            const userName = document.getElementById("login").value;
+/*
+            if(userName==""){
+                alert("nevyplnene pole")
+            }
+            if (role==0){
+                alert("neurcena role")
+            }*/
+            if((userName=="")||(role==0)){
+                alert("nevyplnene pole, nebo neurcena role")
+
+            }
+
+            else {
+                console.log("role: " + role);
+                //zde nasatav problém potud je kod funkcni
+                //var axios = require('axios');
+                //var FormData = require('form-data');
+                var dataBody = new FormData();
+                dataBody.append('userName', userName);
+                dataBody.append('password', '54321');
+                dataBody.append('firstName', '444');
+                dataBody.append('lastName', 'tesr');
+                dataBody.append('telefon', '5555');
+                dataBody.append('email', document.getElementById("email").value);
+                dataBody.append('role', role);
+
+                var config = {
+                    method: 'post',
+                    url: 'http://localhost:8080/novyUzivatel',
+                    headers: {
+                        // 'Cookie': 'JSESSIONID=A3656362C9F4F64ACD07E12FCEDE5E2F',
+                        //...dataBody.getHeaders()
+                    },
+                    data: dataBody
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                        document.getElementById("status").innerText = "chyba dotazu"
+
+
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        document.getElementById("satus")
+                    });
+
+
+                console.log("uzivatel vytvoren");
+            }
+        }
+
+        async function editHeslo() {
+
+            const userName = document.getElementById("login").value;
+            const password= document.getElementById("password").value
+            if ((password== "") || (userName == "")) {
+                alert("nevyplene pole login ,nebo pole heslo")
+
+            } else {
+
+                var dataBody = new FormData();
+                dataBody.append('userName', userName);
+                dataBody.append('password', password);
+
+                var config = {
+                    method: 'post',
+                    url: 'http://localhost:8080/editPassword',
+                    headers: {
+                      //  ...data.getHeaders()
+                    },
+                    data : dataBody
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+
+        async function editRoleUser() {
+            var role = 0;
+            if (document.getElementById("admin").checked == true) {
+                role = 1
+            } else {
+                if (document.getElementById("sklad").checked == true) {
+                    role = 2;
+                } else {
+                    if (document.getElementById("reklamace").checked == true) {
+                        role = 3;
+                    } else {
+                        role = 0;
+                    }
                 }
             }
-            reload();
-            return false
-        }
-        async function   novyUzivatel(){
-            const role = $(".role:checked").val();
+            const userName = document.getElementById("login").value;
+            if ((role==0)||(userName=="")) {
+                alert("nevybrana role, nebo nevyplnene pole login")
 
-            const data = {
-                userName: document.getElementById("login").value,
-                password: document.getElementById("password").value,
-                firstName: document.getElementById("firstName").value,
-                lastName: document.getElementById("lastName").value,
-                telefon: document.getElementById("telefon").value,
-                eamil: document.getElementById("email").value,
-                role: role
+            }
+            else {
+                var dataBody = new FormData();
+                dataBody.append('userName', userName);
+                dataBody.append('role', role);
 
-
-
-            };
-            var axios = require('axios');
-            var FormData = require('form-data');
-            var dataBody = new FormData();
-            dataBody.append('userName', document.getElementById("login") );
-            dataBody.append('password', '54321');
-            dataBody.append('firstName', '444');
-            dataBody.append('lastName', 'tesr');
-            dataBody.append('telefon', '5555');
-            dataBody.append('eamil', '4444');
-            dataBody.append('role', '1');
-
-            var config = {
-                method: 'post',
-                url: 'http://localhost:8080/novyUzivatel',
-                headers: {
-                    'Cookie': 'JSESSIONID=A3656362C9F4F64ACD07E12FCEDE5E2F',
-                    ...dataBody.getHeaders()
+                var config = {
+                    method: 'post',
+                    url: 'http://localhost:8080/editUserRole',
+                     headers: {
+                    //...data.getHeaders()
                 },
-                data : dataBody
-            };
+                    data: dataBody
+                };
 
-            axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
-
-
-            const user =response.data.login;
-        }
-
-        async function editHeslo(){
-
-            const data = {
-                userName: document.getElementById("login").value,
-                password: document.getElementById("password").value,
-            };
-            const response = await axios.patch('https://localhost:8080/editPassword', data);
-            const user =response.data.login;
-
-        }
-
-        async function editRoleUser(){
-            const role = $(".role:checked").val();
-            const data = {
-                userName: document.getElementById("login").value,
-                role: role
-            };
-            const response = await axios.patch('https://localhost:8080/editUserRole', data);
-            const user =response.data.login;
-
+                axios(config)
+                    .then(function (response) {
+                        console.log(JSON.stringify(response.data));
+                    })
+                    .catch(function (error) {
+                        console.log("error");
+                    });
+            }
         }
 
        async function reload(){
            const result = await axios.get("http://localhost:8080/admin");
-           console.log(result);
+           this.reklkamce = result.data.value;
+           $().append("vypis")
+
+       }
+       function logout(){
+            axios.post("http://localhost:8080/logout")
        }
     </script>
 </head>
-<body onload="reload()">
+<body>
 
     <label>správa uživatelů</label>
     <br/>
@@ -137,15 +228,20 @@
     <label>akce:</label>
     <br/>
     <label>nový user: </label>
-    <input type="radio" id="newUse" name="akce" class="akceTyp" value="rkelamace"/>
+    <input type="radio" id="newUser" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <label>změna hesla: </label>
-    <input type="radio" id="newPassword" name="akceTyp" class="akce" value="rkelamace"/>
+    <input type="radio" id="newPassword" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <label>změna role user:</label>
-    <input type="radio" id="edtiRole" name="akceTyp" class="akce" value="rkelamace"/>
+    <input type="radio" id="edtiRole" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <br/>
-    <button type="submit" id="ok" name="ok" onclick="submit()">ok</button>
+    <!--<button type="button" id="ok" name="ok" onclick="submit()">ok</button>-->
+    <button onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
-
+    <button onclick="logout()">odhlaseni</button>
+<a href="/logout">Odhlaseni</a>
+<br/>
+    <div id="status"></div>
+<div class="list"></div>
 
 </body>
 </html>

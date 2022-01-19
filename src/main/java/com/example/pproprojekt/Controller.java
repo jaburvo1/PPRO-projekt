@@ -1,6 +1,7 @@
 package com.example.pproprojekt;
 
 import com.example.pproprojekt.entity.Complaint;
+import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ public class Controller {
     @Autowired
     private Login login;
     private int userId = -1;
-    private int role;
+    private int role=0;
     @Autowired
     private Admin admin;
     @Autowired
@@ -57,8 +58,13 @@ public class Controller {
         //userId = login.getUserID();
         // role = login.getRole();
         //test data
-        userId = Math.round(employee.getIDEmployee());
-        role = employee.getRole();
+        if(employee==null){
+            userId=-1;
+        }
+        else {
+            userId = Math.round(employee.getIDEmployee());
+            role = employee.getRole();
+        }
         //role=2;
         //role=3;
         //role=0;
@@ -69,8 +75,8 @@ public class Controller {
                 case 1:
 // sesion + map map /admin
                     //nevyt aret instance
-                    modelAndView = adminView();
-                    //modelAndView.setViewName("/admin.xhtml");
+                    //modelAndView = adminView();
+                    modelAndView.setViewName("/admin.xhtml");
 
 
                     break;
@@ -92,31 +98,37 @@ public class Controller {
 
                     break;
             }
+
+            this.modelAndView = modelAndView;
+        }
+            else{
+            ModelAndView modelAndView = new ModelAndView();
+                //modelAndView.setViewName("/login.xhtml");
+            modelAndView.setViewName("/login.xhtml");
             this.modelAndView = modelAndView;
 
-            return this.modelAndView;
-
-        } else {
-            //response.getWriter().println("Nexistujici uzivatel, nebo chybne prihlaseni");
-
+            }
+            return modelAndView;
         }
 
-        return null;
-
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(Model model) {
+        role=0;
+        userId=-1;
+        modelAndView.setViewName("index.xhtml");
+        return modelAndView;
     }
+
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
     public ModelAndView adminView() {
-        // ModelAndView modelAndView = new ModelAndView()
-        modelAndView.setViewName("admin.xhtml");
 
-        //this.modelAndView=modelAndView;
         return modelAndView;
     }
 
     @RequestMapping(value = "/reklamace", method = RequestMethod.GET)
-    public ModelAndView complaintView() {
-        ModelAndView modelAndView = new ModelAndView();
+    public ComplaintData complaintView() {
+        //ModelAndView modelAndView = new ModelAndView();
 
         List<Complaint> complaintListAccepted=new ArrayList<>();
         complaintListAccepted =complaint.getAllComplaint(1);
@@ -124,49 +136,60 @@ public class Controller {
         complaintListSettled =complaint.getAllComplaint(2);
         List<Complaint> complaintListRejected=new ArrayList<>();
         complaintListRejected =complaint.getAllComplaint(3);
-    modelAndView.setViewName("reklamace.xhtml");
+    //modelAndView.setViewName("reklamace.xhtml");
+
+        System.out.println(complaintListAccepted.get(1).getStav());
+        ComplaintData data = new ComplaintData(complaintListAccepted, complaintListSettled, complaintListRejected);
+
 //vips do html??
-        this.modelAndView = modelAndView;
-        return modelAndView;
+        return data;
     }
 
     @RequestMapping(value = "/sklad", method = RequestMethod.GET)
-    public ModelAndView depotView() {
-
-        modelAndView.setViewName("sklad.xhtml");
-
-        //this.modelAndView=modelAndView;
-        return modelAndView;
+    public List<Depot> depotView() {
+        List<Depot> partList=new ArrayList<>();
+        partList = depot.getAllPart();
+        return partList;
     }
 
     @RequestMapping(value = "/novyUzivatel", method = RequestMethod.POST)
-    public ModelAndView addUser(Model model, @RequestParam("userName") String userName,
+    public ModelAndView /*String*/ addUser(Model model, @RequestParam("userName") String userName,
                                 @RequestParam("password") String password,
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
                                 @RequestParam("telefon") String telefon,
-                                @RequestParam("eamil") String email, @RequestParam("role") int newRole) {
+                                @RequestParam("email") String email, @RequestParam("role") int newRole) {
         System.out.println("jemeno: " + firstName + "primeno: " + lastName);
         model.addAttribute("addUser", admin.addUser(userName, firstName, lastName, telefon, email, password, newRole));
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("/admin.xhtml");
+        /*Employee employee =(Employee) admin.addUser(userName, firstName, lastName, telefon, email, password, newRole);
+        String status = "";
+        if(employee!=null){
+            status="uzivatel vytvoren";
+        }
+        else{
+            status="Chyba pri vytvareni uzivatel existujcí eamil";
+        }
+*/
         return modelAndView;
+        //System.out.println(status);
+        //return status;
     }
 
-    @RequestMapping(value = "/editUserRole", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/editUserRole", method = RequestMethod.POST)
     public ModelAndView editUserRole(Model model, @RequestParam("userName") String userName, @RequestParam("role") int newRole) {
 
         model.addAttribute("editUserRole", admin.editUserRole(userName, newRole));
 
-        modelAndView = adminView();
         return modelAndView;
     }
 
-    @RequestMapping(value = "/editPassword", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
     public ModelAndView editPassword(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
         model.addAttribute("editPassword", admin.editPassword(userName, password));
-
-        modelAndView = adminView();
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("/admin.xhtml");
         return modelAndView;
     }
 
@@ -177,7 +200,7 @@ public class Controller {
 
         model.addAttribute("addReklamace", complaint.add(codeComplaint, description, criateDate, client, stav, userId));
         //modelAndView.setViewName("/reklamace.xhtml");
-        modelAndView = complaintView();
+        complaintView();
         return modelAndView;
     }
 
@@ -189,7 +212,7 @@ public class Controller {
 
         model.addAttribute("editReklamace", complaint.edit(codeComplaint,stav, userId, infoCmoplaint, settlementDate));
 
-        modelAndView = complaintView();
+        complaintView();
         return modelAndView;
     }
 
@@ -200,7 +223,7 @@ public class Controller {
 
         model.addAttribute("addDil", depot.addPart(namePart, typePart, subtypePart, parametrsPart, manufacturePart, countPart));
 
-        modelAndView = depotView();
+        //modelAndView = depotView();
         return modelAndView;
 
     }
@@ -211,7 +234,7 @@ public class Controller {
 
         model.addAttribute("addkusDilu", depot.addPiecePart(namePart, countPart));
 
-        modelAndView = depotView();
+        //modelAndView = depotView();
         return modelAndView;
 
     }
@@ -222,7 +245,7 @@ public class Controller {
         System.out.println("nazevDilu: "+namePart);
         model.addAttribute("removekusDilu", depot.removePiecePart(namePart, countPart));
 
-        modelAndView = depotView();
+       // modelAndView = depotView();
         return modelAndView;
 
     }
