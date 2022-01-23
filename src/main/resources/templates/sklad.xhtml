@@ -4,7 +4,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
+    <link rel="stylesheet" href="/styll.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Sklad</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="javascript"></script>
@@ -65,12 +66,17 @@
             const result = await axios.get("http://localhost:8080/sklad");
             console.log(result);
         }
+        function copyFrom(){
+            document.getElementById("nazevDilu").innerText="ok";
+            console.log("ok");
+
+        }
 
     </script>
 </head>
 <body onload="reload()">
 
-<form action="submit()">
+<div class="form">
     <label>správa uživatelů</label>
     <br/>
     <label for="nazevDilu">nazev dilu:</label>
@@ -100,8 +106,12 @@
     <label>vyskladnit</label>
     <input type="radio" id="vyskladnitDil" name="skladDil" class="skladDil" value="vyskladnit"/>
     <br/>
-    <button type="submit" id="ok" name="ok">ok</button>
+    <button type="button" id="ok" name="ok" ondblclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
-</form>
+
+</div>
+<div class="vypisSklad">
+<button onclick="copyFrom()">edit</button>
+</div>
 </body>
 </html>

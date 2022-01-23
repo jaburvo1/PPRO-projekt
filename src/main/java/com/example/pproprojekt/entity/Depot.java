@@ -22,7 +22,7 @@ public class Depot {
     private String manufacturePart;
     @Column(name = "POCET_KUSU")
     private int countPart;
-    @Column(name = "SKLAD_DILU_ID", nullable = true)
+    @Column(name = "SKLAD_DILU_ID")
     private int idSkald= 7;
     public Depot() {
     }
@@ -34,7 +34,7 @@ public class Depot {
         this.parametrsPart = parametrsPart;
         this.manufacturePart = manufacturePart;
         this.countPart = countPart;
-        idSkald=7;
+        //idSkald=7;
     }
 
     public int getId() {

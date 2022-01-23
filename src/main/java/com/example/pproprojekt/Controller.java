@@ -3,6 +3,8 @@ package com.example.pproprojekt;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
+import org.apache.xerces.xs.XSAttributeUse;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +34,9 @@ public class Controller {
     @Autowired
     private ComplaintService complaint;
     private ModelAndView modelAndView;
+    private List<Complaint> complaintListAccepted = new ArrayList<>();
+    private List<Complaint> complaintListSettled = new ArrayList<>();
+    private List<Complaint> complaintListRejected = new ArrayList<>();
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -126,24 +131,52 @@ public class Controller {
         return modelAndView;
     }
 
-    @RequestMapping(value = "/reklamace", method = RequestMethod.GET)
-    public ComplaintData complaintView() {
-        //ModelAndView modelAndView = new ModelAndView();
+    /*@RequestMapping(value = "/reklamace", method = RequestMethod.GET)
+    public List<Complaint> complaintView(/*@RequestParam("stav") int stav*//*) {
 
-        List<Complaint> complaintListAccepted=new ArrayList<>();
-        complaintListAccepted =complaint.getAllComplaint(1);
-        List<Complaint> complaintListSettled=new ArrayList<>();
-        complaintListSettled =complaint.getAllComplaint(2);
-        List<Complaint> complaintListRejected=new ArrayList<>();
-        complaintListRejected =complaint.getAllComplaint(3);
-    //modelAndView.setViewName("reklamace.xhtml");
+        complaintListAccepted = complaint.getAllComplaint(1);
+        complaintListSettled = complaint.getAllComplaint(2);
+        complaintListRejected = complaint.getAllComplaint(3);
+int stav=1;
 
-        System.out.println(complaintListAccepted.get(1).getStav());
-        ComplaintData data = new ComplaintData(complaintListAccepted, complaintListSettled, complaintListRejected);
-
-//vips do html??
-        return data;
+        List<Complaint> complaints = new ArrayList<>();
+        switch (stav) {
+            case 1:
+                complaints = complaintListAccepted;
+                break;
+            case 2:
+                complaints = complaintListSettled;
+                break;
+            case 3:
+                complaints = complaintListRejected;
+                break;
+        }
+        return complaints;
     }
+*/
+
+    @RequestMapping(value = "/reklamaceA", method = RequestMethod.GET)
+    public List<Complaint> complaintAccepted() {
+        complaintListAccepted = new ArrayList<>();
+        complaintListAccepted = complaint.getComplaintAccepted();
+        return complaintListAccepted;
+    }
+
+    @RequestMapping(value = "/reklamaceS", method = RequestMethod.GET)
+    public List<Complaint> complaintSettled() {
+        complaintListAccepted = new ArrayList<>();
+        complaintListAccepted = complaint.getComplaintsettled();
+        return complaintListAccepted;
+    }
+
+    @RequestMapping(value = "/reklamaceR", method = RequestMethod.GET)
+    public List<Complaint> complaintRejected() {
+        complaintListRejected = new ArrayList<>();
+        complaintListRejected = complaint.getComplaintRejected();
+        return complaintListRejected;
+    }
+
+
 
     @RequestMapping(value = "/sklad", method = RequestMethod.GET)
     public List<Depot> depotView() {
@@ -153,26 +186,28 @@ public class Controller {
     }
 
     @RequestMapping(value = "/novyUzivatel", method = RequestMethod.POST)
-    public ModelAndView /*String*/ addUser(Model model, @RequestParam("userName") String userName,
+    public int /*ModelAndView*/ /*String*/ addUser(Model model, @RequestParam("userName") String userName,
                                 @RequestParam("password") String password,
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
                                 @RequestParam("telefon") String telefon,
                                 @RequestParam("email") String email, @RequestParam("role") int newRole) {
-        System.out.println("jemeno: " + firstName + "primeno: " + lastName);
+       /* System.out.println("jemeno: " + firstName + "primeno: " + lastName);
         model.addAttribute("addUser", admin.addUser(userName, firstName, lastName, telefon, email, password, newRole));
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin.xhtml");
-        /*Employee employee =(Employee) admin.addUser(userName, firstName, lastName, telefon, email, password, newRole);
-        String status = "";
+        modelAndView.setViewName("/admin.xhtml");*/
+        Employee employee =(Employee) admin.addUser(userName, firstName, lastName, telefon, email, password, newRole);
+        //String status = "";
+        int status=0;
         if(employee!=null){
-            status="uzivatel vytvoren";
+            status=500;
         }
         else{
-            status="Chyba pri vytvareni uzivatel existujcí eamil";
+            status=200;
         }
-*/
-        return modelAndView;
+
+        //return modelAndView;
+        return status;
         //System.out.println(status);
         //return status;
     }
@@ -200,7 +235,7 @@ public class Controller {
 
         model.addAttribute("addReklamace", complaint.add(codeComplaint, description, criateDate, client, stav, userId));
         //modelAndView.setViewName("/reklamace.xhtml");
-        complaintView();
+        //complaintView();
         return modelAndView;
     }
 
@@ -212,7 +247,7 @@ public class Controller {
 
         model.addAttribute("editReklamace", complaint.edit(codeComplaint,stav, userId, infoCmoplaint, settlementDate));
 
-        complaintView();
+        //complaintView();
         return modelAndView;
     }
 

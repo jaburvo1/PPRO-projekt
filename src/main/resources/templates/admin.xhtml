@@ -4,7 +4,8 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs" />
+    <link rel="stylesheet" href="/styll.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>správa user</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
@@ -53,31 +54,32 @@
                 }
                     }
 
+
             const userName = document.getElementById("login").value;
-/*
-            if(userName==""){
-                alert("nevyplnene pole")
-            }
-            if (role==0){
-                alert("neurcena role")
-            }*/
-            if((userName=="")||(role==0)){
+            const email = document.getElementById("email").value;
+            const telefonCislo = document.getElementById("telefon").value;
+            const password = document.getElementById("password").value;
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+
+            if((userName=="")||(password=="")||(email=="")||(telefonCislo=="")||(firstName=="")||(lastName=="")||(role==0)){
                 alert("nevyplnene pole, nebo neurcena role")
 
             }
 
             else {
                 console.log("role: " + role);
+                var status;
                 //zde nasatav problém potud je kod funkcni
                 //var axios = require('axios');
                 //var FormData = require('form-data');
                 var dataBody = new FormData();
                 dataBody.append('userName', userName);
-                dataBody.append('password', '54321');
-                dataBody.append('firstName', '444');
-                dataBody.append('lastName', 'tesr');
-                dataBody.append('telefon', '5555');
-                dataBody.append('email', document.getElementById("email").value);
+                dataBody.append('password', password);
+                dataBody.append('firstName', firstName);
+                dataBody.append('lastName', lastName);
+                dataBody.append('telefon', telefonCislo);
+                dataBody.append('email', email);
                 dataBody.append('role', role);
 
                 var config = {
@@ -93,14 +95,23 @@
                 axios(config)
                     .then(function (response) {
                         console.log(JSON.stringify(response.data));
-                        document.getElementById("status").innerText = "chyba dotazu"
+                        if(response!=null){
+                            //status="ok";
+                            document.getElementById("status").value ="ok"
+                        }
 
 
                     })
                     .catch(function (error) {
                         console.log(error);
-                        document.getElementById("satus")
+                        //status=error.toString();
+                        status="chyba"
+                        document.getElementById("status").value ="chyba";
                     });
+                document.getElementById("status").disabled = false;
+                document.getElementById("status").redonly = true;
+                //document.getElementById("status").value = this.status;
+                //console.log(status);
 
 
                 console.log("uzivatel vytvoren");
@@ -131,7 +142,8 @@
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
+                        //console.log(JSON.stringify(response.data));
+                        console.log(response.status);
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -175,10 +187,12 @@
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
+                       // console.log(JSON.stringify(response.data));
+                        console.log(response.status);
                     })
                     .catch(function (error) {
                         console.log("error");
+                        alert(error.constructor);
                     });
             }
         }
@@ -189,13 +203,12 @@
            $().append("vypis")
 
        }
-       function logout(){
-            axios.post("http://localhost:8080/logout")
-       }
+
+
     </script>
 </head>
 <body>
-
+<div class="form">
     <label>správa uživatelů</label>
     <br/>
     <label for="login">login:</label>
@@ -239,9 +252,13 @@
     <button type="reset" id="delete" name="delete" >vymaž</button>
     <button onclick="logout()">odhlaseni</button>
 <a href="/logout">Odhlaseni</a>
+    <br/>
+    <input type="text" id="status" name="status" disabled="disabled"/>
+</div>
 <br/>
-    <div id="status"></div>
-<div class="list"></div>
+
+<div class="list" >
+</div>
 
 </body>
 </html>

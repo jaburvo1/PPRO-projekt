@@ -44,3 +44,17 @@ ul{
     height: auto;
     background-color: cadetblue;
 }
+.vypisSklad{
+    position: relative;
+    top:100px;
+    width: auto;
+    height: auto;
+}
+.form{
+    background-color: aquamarine;
+    position: relative;
+    top: 20px;
+    width: auto;
+    height: auto;
+    text-decoration-color: black;
+}

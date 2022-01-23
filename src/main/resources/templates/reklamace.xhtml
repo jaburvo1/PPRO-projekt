@@ -4,68 +4,107 @@
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-    <link rel="stylesheet" type="text/css" href="PPRO-projekt\src\main\resources\static\styll.cs"/>
+    <link rel="stylesheet" href="/styll.css"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Reklamace</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="javascript"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
 
-    <script src="https://unpkg.com/axios/dist/axios.min.js" type="javascript"></script>
-    <script type="javascript">
-        import axios from "axios";
+    <script type="text/javascript">
 
         function submit() {
 
+            if(document.getElementById("addReklamace").checked==true){
 
-
-            const typAkce = $(".typAkce:checked").val();
-            if(typAkce==1){
-
+                console.log("ok");
                 addReklamace();
 
             }
             else{
+                if (document.getElementById("editReklamace").checked==true){
+                    console.log("ok");
+
+                }
+                else {
+                    alert("vyrbat typ akce")
+                }
 
             }
 
         };
-        async function   addReklamace(){
-            var stav = $(".stav:checked").val();
-            var klient = $(".klient:checked").val();
-            const data = { kodReklamace: document.getElementById("kodReklamace").value,
-                popisReklamace: document.getElementById("popisReklamace").value,
-                datumVytvorení: document.getElementById("datumVytvoření").value,
-                client: klient,
-                stavReklamace: stav
+        async function   addReklamace() {
+            const kodReklamace = document.getElementById("kodReklamace").value;
+            const popisReklamace = document.getElementById("popisReklamace").value;
+            const datumVytvoreni = document.getElementById("datumVytvoreni").value;
+            if((kodReklamace=="")||(popisReklamace=="")||(datumVytvoreni=="")){
+                alert("nevpynena pole kodReklamace, popisReklamace a datumVytvoreni, ebo jedon znich")
+            }
+            else {
+                var stav;
+                if (document.getElementById("stavPrijato").checked == false) {
+                    alert("nova reklamace musi mit stav prijato satav prenastaven")
+                    stav = 1;
 
-            };
-            //const response = await axios.post('http://localhost:8080/novaRekalamace', data)
-            //const kodReklamace =response.data.kodReklamace;
-            var axios = require('axios');
-            var FormData = require('form-data');
-            var dataBody = new FormData();
-            data.append('kodReklamace', document.getElementById("kodReklamace"));
-            data.append('popisReklamace', document.getElementById("popisReklamace"));
-            data.append('datumVytvorení', document.getElementById("datumVytvoření"));
-            data.append('client', klient);
-            data.append('stavReklamace', stav);
+                } else {
+                    stav = 1;
+                }
+                console.log(stav);
 
-            var config = {
-                method: 'post',
-                url: 'http://localhost:8080/novaRekalamace',
-                headers: {
-                    ...dataBody.getHeaders()
-                },
-                data : dataBody
-            };
+                var klient
+                if (document.getElementById("klient1").checked == true) {
+                    klient = 1;
+                } else {
+                    if (document.getElementById("klient2").checked == true) {
+                        klient = 2;
+                    } else {
+                        if (document.getElementById("klient3").checked == true) {
+                            klient = 3;
+                        } else {
+                            klient = 0;
+                        }
+                    }
+                }
+                if (klient == 0) {
+                    alert("klinet nevybran")
+                } else {
 
-            axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
 
-        }
+                    //const response = await axios.post('http://localhost:8080/novaRekalamace', data)
+                    //const kodReklamace =response.data.kodReklamace;
+                    //var axios = require('axios');
+                    //var FormData = require('form-data');
+                    var dataBody = new FormData();
+                    dataBody.append('kodReklamace', kodReklamace);
+                    dataBody.append('popisReklamace', popisReklamace);
+                    dataBody.append('datumVytvorení', datumVytvoreni);
+                    dataBody.append('client', klient);
+                    dataBody.append('stavReklamace', stav);
+
+                    var status;
+                    var config = {
+                        method: 'post',
+                        url: 'http://localhost:8080/novaRekalamace',
+                        headers: {
+                            //...dataBody.getHeaders()
+                        },
+                        data: dataBody
+                    };
+
+                    axios(config)
+                        .then(function (response) {
+                            console.log(JSON.stringify(response.data));
+                            status = response.status;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            status = error.status;
+                        })
+                    document.getElementById("status").value = status;
+                    document.getElementById("status").disabled = false;
+
+                }
+            }
+        };
         async function editRekalamce(){
 /*
             const data = { kodReklamace: document.getElementById("kodReklamace").value,
@@ -79,16 +118,16 @@
            var axios = require('axios');
             var FormData = require('form-data');
             var dataBody = new FormData();
-            data.append('kodReklamace', document.getElementById("kodReklamace"));
-            data.append('infoReklamace', document.getElementById("infoReklamace"));
-            data.append('datumVyreseni', document.getElementById("datumVyreseni"));
-            data.append('stavReklamace', stav);
+            dataBody.append('kodReklamace', document.getElementById("kodReklamace"));
+            dataBody.append('infoReklamace', document.getElementById("infoReklamace"));
+            dataBody.append('datumVyreseni', document.getElementById("datumVyreseni"));
+            dataBody.append('stavReklamace', stav);
 
             var config = {
                 method: 'patch',
                 url: 'http://localhost:8080/editRekalamace',
                 headers: {
-                    ...dataBody.getHeaders()
+                    //...dataBody.getHeaders()
                 },
                 data : dataBody
             };
@@ -110,26 +149,41 @@
            const reklamace =response.data.kodReklamace;
         };
 */
-        async function getReklamaceAll() {
-            const {data} = axios.get("http://localhost:8080/reklamace")
-            {
-                return data;
-            }
-        };
-            async function readReklamace(){
-                const data = [getReklamaceAll()];
-                document.write("&lt;ul>");
-                for (let i = 1; i &lt;= data.length; i++)
-                    document.write("&lt;li>" + i);
-                document.write("</ul>");
-            }
+        async function getReklamace() {
+            var config = {
+                method: 'get',
+                url: 'http://localhost:8080/reklamace?stav=${stav}',
+                headers: {}
+            };
 
-    </script>
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        function readReklamace(){
+           const  {reklamaceA} =getReklamace(1);
+            const  {reklamaceS} =getReklamace(2);
+            const  {reklamaceR} =getReklamace(3);
+
+            document.getElementById("akcept").innerHTML =
+                obj.employees[1].firstName + " " + obj.employees[1].lastName;
+        }
+
+        function submitR()
+        {
+            console.log("ok");
+        }
+
+</script>
 
 
 </head>
-<body onload="getReklamaceAll()">
-<form action="submit()">
+<body onload="readReklamace()">
+<div class="form">
     <label>správa uživatelů</label>
     <br/>
     <label for="kodReklamace">kod reklamace:</label>
@@ -159,7 +213,7 @@
     <label>typ akce:</label>
     <br/>
     <label>nova reklamace</label>
-    <input type="radio" id="addreklamace" name="typAkce" class="typAkce" value="rkelamace"/>
+    <input type="radio" id="addReklamace" name="typAkce" class="typAkce" value="rkelamace"/>
     <label>uprava stavu reklamace</label>
     <input type="radio" id="editReklamace" name="typAkce"  class="typAkce" value="sklad"/>
 
@@ -167,20 +221,16 @@
     <label>klient:</label>
     <br/>
     <label>klient1</label>
-    <input type="radio" id="klient1" name="klient1" class="klient" value="1"/>
+    <input type="radio" id="klient1" name="klient" class="klient" value="1"/>
     <label>klient2</label>
-    <input type="radio" id="klient2" name="klient2"  class="klient" value="2"/>
+    <input type="radio" id="klient2" name="klient"  class="klient" value="2"/>
     <label>klient3</label>
-    <input type="radio" id="klient3" name="klient3"  class="klient" value="3"/>
+    <input type="radio" id="klient3" name="klient"  class="klient" value="3"/>
     <br/>
-    <button type="submit" id="ok" name="ok" onclick="submit()">ok</button>
+    <button onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete">vymaž</button>
-
-
-</form>
-
-<ul>
-Výpis Reklamaci:
-</ul>
+    <br/>
+    <input type="text" id="status" name="status" disabled="disabled"/>
+</div>
 </body>
 </html>
