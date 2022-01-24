@@ -1,7 +1,9 @@
 package com.example.pproprojekt.service;
 
+import ch.qos.logback.classic.util.LogbackMDCAdapter;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.repozitory.ComplaintRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,12 +16,13 @@ public class ComplaintService {
 
     private Complaint complaint;
     //private List<Complaint> listCoplaint;
-@Autowired
-    private ComplaintRepository complaintRepo;
+
     private List<Complaint> complains;
+   @Autowired
+    private ComplaintRepository complaintRepo;
 
     public ComplaintService(ComplaintRepository complaintRepo) {
-        this.complaintRepo = complaintRepo;
+        this.complaintRepo=complaintRepo;
     }
 
     public ComplaintService() {
@@ -54,66 +57,72 @@ public class ComplaintService {
         complaint.setSettlementDate(settlementDate);
         complaintRepo.save(complaint);
 
-
         return complaint;
 
     }
 
     public List<Complaint> getComplaintAccepted() {
         complains =new ArrayList<>();
+        try {
 
-        //complains =complaintRepo.findAll();
-        System.out.println("ok");
-        for(Complaint complaint : complains) {
-            if (complaint.getStav() == 1) {
-                complains.remove(complaint);
+           // complains = complaintRepo.findAll();
+            System.out.println("ok");
+            for (Complaint complaint : complains) {
+                if (complaint.getStav() == 1) {
+                    complains.remove(complaint);
+                }
             }
+        }
+        catch (Exception e) {
+            complaint =new Complaint();
+            complaint.setCodeCmplaint("chyba komunikace z dbs");
+            complaint.setDeiscription("výjimak: " + e);
+            complains.add(complaint);
         }
         return complains;
     }
 
-    public List<Complaint> getComplaintsettled() {
+    public List<Complaint> getComplaintSettled() {
         complains =new ArrayList<>();
 
-        //complains =complaintRepo.findAll();
-        System.out.println("ok");
-        for(Complaint complaint : complains) {
-            if (complaint.getStav() ==2) {
-                complains.remove(complaint);
+        try {
+            //complains = complaintRepo.findAll();
+            System.out.println("ok");
+            for (Complaint complaint : complains) {
+                if (complaint.getStav() == 2) {
+                    complains.remove(complaint);
+                }
             }
+        }
+        catch (Exception e) {
+            complaint =new Complaint();
+            complaint.setCodeCmplaint("chyba komunikace z dbs");
+            complaint.setDeiscription("výjimak: " + e);
+            complains.add(complaint);
         }
         return complains;
     }
 
 
     public List<Complaint> getComplaintRejected() {
-        complains =new ArrayList<>();
-
-        //complains =complaintRepo.findAll();
-        System.out.println("ok");
-        for(Complaint complaint : complains) {
-            if (complaint.getStav() == 3) {
-                complains.remove(complaint);
+        complains = new ArrayList<>();
+        //try {
+            //complains = complaintRepo.findAll();
+            System.out.println("ok");
+            for (Complaint complaint : complains) {
+                if (complaint.getStav() == 3) {
+                    complains.remove(complaint);
+                }
             }
-        }
+        /*} catch (Exception e) {
+           complaint =new Complaint();
+           complaint.setCodeCmplaint("chyba komunikace z dbs");
+           complaint.setDeiscription("výjimak: " + e);
+           complains.add(complaint);
+        }*/
         return complains;
     }
 
 
-/*
-    public List<Complaint> getAllComplaint(int stav) {
-        List<Complaint> complains;
-        System.out.println("ok");
 
-        complains =complaintRepo.findAll();
-        System.out.println("ok");
-        for(Complaint complaint : complains){
-            if(complaint.getStav()!=stav){
-                complains.remove(complaint);
-            }
-        }
-        System.out.println("ok");
-        return complains;
-
-    }*/
 }

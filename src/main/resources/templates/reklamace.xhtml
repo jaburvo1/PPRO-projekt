@@ -11,7 +11,6 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-
         function submit() {
 
             if(document.getElementById("addReklamace").checked==true){
@@ -125,7 +124,8 @@
 
             var config = {
                 method: 'patch',
-                url: 'http://localhost:8080/editRekalamace',
+                //url: 'http://localhost:8080/editRekalamace',
+                url: 'http://127.0.0.1:8080/reklamaceR',
                 headers: {
                     //...dataBody.getHeaders()
                 },
@@ -141,48 +141,87 @@
                 });
 
         };
-            /*const response = await axios.patch('https://localhost:8080/editRekalamace', { params: {
-                    kodReklamace,
-                    firstname}})
-                .then(response => response.status)
-                .catch(err => console.warn(err));
-           const reklamace =response.data.kodReklamace;
-        };
-*/
-        async function getReklamace() {
+        async function getReklamaceR() {
             var config = {
                 method: 'get',
-                url: 'http://localhost:8080/reklamace?stav=${stav}',
+                //url: 'http://localhost:8080/reklamaceR',
+                url: 'http://127.0.0.1:8080/reklamaceR',
                 headers: {}
             };
 
             axios(config)
                 .then(function (response) {
                     console.log(JSON.stringify(response.data));
+                    return response.data
+                })
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    return response.date;
                 })
                 .catch(function (error) {
-                    console.log(error);
+                   // console.log(error);
                 });
         }
-        function readReklamace(){
-           const  {reklamaceA} =getReklamace(1);
-            const  {reklamaceS} =getReklamace(2);
-            const  {reklamaceR} =getReklamace(3);
+        async function getReklamaceA() {
+            var config = {
+                method: 'get',
+                //url: 'http://localhost:8080/reklamace',
+                url: 'http://127.0.0.1:8080/reklamaceA',
+                headers: {}
+            };
 
-            document.getElementById("akcept").innerHTML =
-                obj.employees[1].firstName + " " + obj.employees[1].lastName;
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    return response.date;
+                })
+                .catch(function (error) {
+                    //console.log(error);
+                });
+        }
+        async function getReklamaceS() {
+            var config = {
+                method: 'get',
+                //url: 'http://localhost:8080/reklamace',
+                url: 'http://127.0.0.1:8080/reklamaceS',
+                headers: {}
+            };
+
+            axios(config)
+                .then(function (response) {
+                    console.log(JSON.stringify(response.data));
+                    return response.data
+                })
+                .catch(function (error) {
+                    //console.log(error);
+                    return error;
+                });
+        }
+        async function readReklamace(){
+           const  {reklamaceA} =getReklamaceA();
+           const  {reklamaceR} =getReklamaceR();
+           const  {reklamaceS} =getReklamaceS();
+
+
         }
 
         function submitR()
         {
             console.log("ok");
         }
+        function copy(reklamace) {
+
+            var reklamaceCopy = reklamace.getAttribute("data-reklamace-type");
+            document.getElementById("kodReklamace").value=reklamaceCopy
+        }
+
+
 
 </script>
 
 
 </head>
-<body onload="readReklamace()">
+<body>
 <div class="form">
     <label>správa uživatelů</label>
     <br/>
@@ -232,5 +271,29 @@
     <br/>
     <input type="text" id="status" name="status" disabled="disabled"/>
 </div>
+
+<div class="vypisRekalamci">
+
+    <button type="button" id="nactiReklamace" name="nactiReklamace" ondblclick="readReklamace()">ZobarazReklamace</button>
+    <p>prijate:</p>
+    <ul>
+        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
+        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
+        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+    </ul>
+    <p>vyřízené:</p>
+    <ul>
+        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
+        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
+        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+    </ul>
+    <p>zamitnuté:</p>
+    <ul>
+        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
+        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
+        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+    </ul>
+</div>
+
 </body>
 </html>

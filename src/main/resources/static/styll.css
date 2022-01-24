@@ -58,3 +58,11 @@ ul{
     height: auto;
     text-decoration-color: black;
 }
+.vypisRekalamci{
+    background-color: aquamarine;
+    position: relative;
+    top: 20px;
+    width: auto;
+    height: auto;
+    text-decoration-color: black;
+}

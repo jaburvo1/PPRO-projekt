@@ -164,9 +164,9 @@ int stav=1;
 
     @RequestMapping(value = "/reklamaceS", method = RequestMethod.GET)
     public List<Complaint> complaintSettled() {
-        complaintListAccepted = new ArrayList<>();
-        complaintListAccepted = complaint.getComplaintsettled();
-        return complaintListAccepted;
+        complaintListSettled = new ArrayList<>();
+        complaintListSettled = complaint.getComplaintSettled();
+        return complaintListSettled;
     }
 
     @RequestMapping(value = "/reklamaceR", method = RequestMethod.GET)
