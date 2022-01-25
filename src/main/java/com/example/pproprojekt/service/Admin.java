@@ -103,4 +103,10 @@ public class Admin {
 
         return employee;
     }
+
+    public List<Employee> findAll() {
+        listEmployee =new ArrayList<>();
+        listEmployee = emploeeyRepo.findAll();
+        return listEmployee;
+    }
 }

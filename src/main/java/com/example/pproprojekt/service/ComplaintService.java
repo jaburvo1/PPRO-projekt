@@ -1,6 +1,5 @@
 package com.example.pproprojekt.service;
 
-import ch.qos.logback.classic.util.LogbackMDCAdapter;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.repozitory.ComplaintRepository;
 
@@ -18,15 +17,9 @@ public class ComplaintService {
     //private List<Complaint> listCoplaint;
 
     private List<Complaint> complains;
-   @Autowired
+  @Autowired
     private ComplaintRepository complaintRepo;
 
-    public ComplaintService(ComplaintRepository complaintRepo) {
-        this.complaintRepo=complaintRepo;
-    }
-
-    public ComplaintService() {
-    }
 
     public Object add(String codeComplaint, String description, String criateDate, int client, int stav, int employeId) {
         System.out.println("kodReklamace: "+codeComplaint+"stav: "+stav);

@@ -126,53 +126,43 @@ public class Controller {
 
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public ModelAndView adminView() {
-
-        return modelAndView;
-    }
-
-    /*@RequestMapping(value = "/reklamace", method = RequestMethod.GET)
-    public List<Complaint> complaintView(/*@RequestParam("stav") int stav*//*) {
-
-        complaintListAccepted = complaint.getAllComplaint(1);
-        complaintListSettled = complaint.getAllComplaint(2);
-        complaintListRejected = complaint.getAllComplaint(3);
-int stav=1;
-
-        List<Complaint> complaints = new ArrayList<>();
-        switch (stav) {
-            case 1:
-                complaints = complaintListAccepted;
-                break;
-            case 2:
-                complaints = complaintListSettled;
-                break;
-            case 3:
-                complaints = complaintListRejected;
-                break;
+    public List<Employee> adminView() {
+        List<Employee> employees = new ArrayList<>();
+        if(role==1) {
+            employees = admin.findAll();
         }
-        return complaints;
+        /*else {
+
+        }*/
+        return employees;
     }
-*/
+
+
 
     @RequestMapping(value = "/reklamaceA", method = RequestMethod.GET)
     public List<Complaint> complaintAccepted() {
         complaintListAccepted = new ArrayList<>();
-        complaintListAccepted = complaint.getComplaintAccepted();
+        if(role==3) {
+            complaintListAccepted = complaint.getComplaintAccepted();
+        }
         return complaintListAccepted;
     }
 
     @RequestMapping(value = "/reklamaceS", method = RequestMethod.GET)
     public List<Complaint> complaintSettled() {
         complaintListSettled = new ArrayList<>();
-        complaintListSettled = complaint.getComplaintSettled();
+            if(role==3) {
+                complaintListSettled = complaint.getComplaintSettled();
+            }
         return complaintListSettled;
     }
 
     @RequestMapping(value = "/reklamaceR", method = RequestMethod.GET)
     public List<Complaint> complaintRejected() {
         complaintListRejected = new ArrayList<>();
-        complaintListRejected = complaint.getComplaintRejected();
+                if(role==3) {
+                    complaintListRejected = complaint.getComplaintRejected();
+                }
         return complaintListRejected;
     }
 
@@ -181,7 +171,9 @@ int stav=1;
     @RequestMapping(value = "/sklad", method = RequestMethod.GET)
     public List<Depot> depotView() {
         List<Depot> partList=new ArrayList<>();
-        partList = depot.getAllPart();
+        if(role==2) {
+            partList = depot.getAllPart();
+        }
         return partList;
     }
 
