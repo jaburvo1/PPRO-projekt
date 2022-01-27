@@ -6,11 +6,12 @@
 <head>
     <link rel="stylesheet" href="/styll.css"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>správa user</title>
+    <title> správa user</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js" type="text/javascript"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-
+        var buttonCopy;
+        const url = "http://127.0.0.1:8080/";
        function submit(){
             console.log(document.getElementById("login").value);
 
@@ -21,7 +22,6 @@
               }
               else {
                   if(document.getElementById("newPassword").checked==true){
-
                       console.log("ok");
                       editHeslo();
                   }
@@ -31,7 +31,7 @@
                   }
               }
               reload();
-              return false
+
         }
 
         async function   novyUzivatel(){
@@ -84,7 +84,7 @@
 
                 var config = {
                     method: 'post',
-                    url: 'http://localhost:8080/novyUzivatel',
+                    url: ''+url+'novyUzivatel',
                     headers: {
                         // 'Cookie': 'JSESSIONID=A3656362C9F4F64ACD07E12FCEDE5E2F',
                         //...dataBody.getHeaders()
@@ -94,31 +94,24 @@
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
-                        if(response!=null){
-                            //status="ok";
-                            document.getElementById("status").value ="ok"
-                        }
-
-
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
                     })
                     .catch(function (error) {
                         console.log(error);
-                        //status=error.toString();
-                        status="chyba"
+                        document.getElementById("status").disabled = false;
                         document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
                     });
-                document.getElementById("status").disabled = false;
-                document.getElementById("status").redonly = true;
-                //document.getElementById("status").value = this.status;
-                //console.log(status);
+
 
 
                 console.log("uzivatel vytvoren");
             }
         }
 
-        async function editHeslo() {
+        async  function editHeslo() {
 
             const userName = document.getElementById("login").value;
             const password= document.getElementById("password").value
@@ -126,24 +119,23 @@
                 alert("nevyplene pole login ,nebo pole heslo")
 
             } else {
-
+                console.log(userName+""+password);
                 var dataBody = new FormData();
                 dataBody.append('userName', userName);
                 dataBody.append('password', password);
 
                 var config = {
                     method: 'post',
-                    url: 'http://localhost:8080/editPassword',
+                    url: "http://127.0.0.1:8080/editPassword",
                     headers: {
-                      //  ...data.getHeaders()
+                        //...data.getHeaders()
                     },
                     data : dataBody
                 };
 
                 axios(config)
                     .then(function (response) {
-                        //console.log(JSON.stringify(response.data));
-                        console.log(response.status);
+                        console.log(JSON.stringify(response.data));
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -166,19 +158,19 @@
                     }
                 }
             }
-            const userName = document.getElementById("login").value;
-            if ((role==0)||(userName=="")) {
+            const email = document.getElementById("email").value;
+            if ((role==0)||(email=="")) {
                 alert("nevybrana role, nebo nevyplnene pole login")
 
             }
             else {
                 var dataBody = new FormData();
-                dataBody.append('userName', userName);
+                dataBody.append('email', email);
                 dataBody.append('role', role);
 
                 var config = {
                     method: 'post',
-                    url: 'http://localhost:8080/editUserRole',
+                    url: ''+url+'editUserRole',
                      headers: {
                     //...data.getHeaders()
                 },
@@ -202,35 +194,46 @@
 
            var config = {
                method: 'get',
-               //url: 'http://localhost:8080/admin',
-               url: 'http://127.0.0.1:8080/admin',
+
+               url: ''+url+'admin',
                headers: {}
            };
 
            axios(config)
                .then(function (response) {
-                   //console.log(JSON.stringify(response.data));
-                   //const json = response.data
-                   //const rezult=JSON.parse(json);
-                   //console.log(JSON.parse(response.data))
-                   //console.log(rezult.userName);
-                   //console.log(response.data);
-                   //const = response.data.;
+
                    const rezults = response.data;
                    console.log(rezults);
                    for (let i in rezults) {
                        let rezult = rezults[i];
                        //console.log(rezult);
-                       let objRezult = "login: " + rezult.userName.toString() + " jmeno: " + rezult.firstName.toString() + " primeni: " + rezult.lastName.toString() + " role: " + rezult.role.toString();
-                       //console.log(objRezult);
-                       listEmployees[i] = objRezult;
+                       let stringRezult = "login:, " + rezult.userName.toString() + ","+ " jmeno: " + rezult.firstName.toString()+"," + " primeni: " + rezult.lastName.toString() + " role: " + rezult.role.toString();
+                       //console.log(stringRezult);
+                       listEmployees[i] = stringRezult;
                        console.log(listEmployees[i]);
-                       var items = document.getElementById("items");
-                       var item = document.createElement("item");
-                       item.appendChild(document.createTextNode(objRezult));
-                       //item.setAttribute("id", listEmployees[i]);
-                       items.appendChild(item);
                    }
+                   listEmployees.forEach(function(item) {
+                       var li = document.createElement("li");
+                       var text = document.createTextNode(item);
+                       var buttonCopy=  document.createElement("button")
+                       var pom=""
+                       buttonCopy.innerHTML = "kopírovat";
+                       buttonCopy.addEventListener ("click", function() {
+                           const pomArray = item.split(",");
+                           console.log(pomArray[1].toString());
+                           pom=pomArray[1];
+                           console.log(pom);
+                           document.getElementById("login").value=pom.toString();
+                           console.log(pom);
+                       });
+
+
+                       li.appendChild(text);
+                       li.appendChild(buttonCopy);
+
+
+                       document.getElementById("items").appendChild(li);
+                   });
 
 
                })
@@ -246,7 +249,6 @@
                items.appendChild(item);
            }*/
        }
-
 
     </script>
 </head>
@@ -290,10 +292,8 @@
     <label>změna role user:</label>
     <input type="radio" id="edtiRole" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <br/>
-    <!--<button type="button" id="ok" name="ok" onclick="submit()">ok</button>-->
     <button onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
-    <button onclick="logout()">odhlaseni</button>
 <a href="/logout">Odhlaseni</a>
     <br/>
     <input type="text" id="status" name="status" disabled="disabled"/>
@@ -301,9 +301,8 @@
 <br/>
 
 <div class="vypisZamestnancu" >
+    <h1>Výpis Zaměstnanců:</h1> (role zaměstnanců: admin=1, skald=2, reklamace=3)
     <ul id="items">
-        <li>Výpis Zaměstnanců: (role zaměstnanců: admin=1, skald=2, reklamace=3)  </li>
-
     </ul>
 </div>
 

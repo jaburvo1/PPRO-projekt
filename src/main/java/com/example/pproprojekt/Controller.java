@@ -3,8 +3,7 @@ package com.example.pproprojekt;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
-import org.apache.xerces.xs.XSAttributeUse;
-import org.json.JSONObject;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,9 +33,6 @@ public class Controller {
     @Autowired
     private ComplaintService complaint;
     private ModelAndView modelAndView;
-    private List<Complaint> complaintListAccepted = new ArrayList<>();
-    private List<Complaint> complaintListSettled = new ArrayList<>();
-    private List<Complaint> complaintListRejected = new ArrayList<>();
 
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
@@ -70,9 +66,7 @@ public class Controller {
             userId = Math.round(employee.getIDEmployee());
             role = employee.getRole();
         }
-        //role=2;
-        //role=3;
-        //role=0;
+     
 
         if (userId!=-1) {
             ModelAndView modelAndView = new ModelAndView();
@@ -131,9 +125,6 @@ public class Controller {
         if(role==1) {
             employees = admin.findAll();
         }
-        /*else {
-
-        }*/
         return employees;
     }
 
@@ -141,28 +132,56 @@ public class Controller {
 
     @RequestMapping(value = "/reklamaceA", method = RequestMethod.GET)
     public List<Complaint> complaintAccepted() {
-        complaintListAccepted = new ArrayList<>();
-        if(role==3) {
-            complaintListAccepted = complaint.getComplaintAccepted();
+        List<Complaint>complaintListAccepted = new ArrayList<>();
+        List<Complaint>complaintListPom;
+        if(role==3){
+            complaintListPom = complaint.getComplaintAccepted();
+            for (int i=0; i<complaintListPom.size();i++){
+                Complaint pomComplaint = complaintListPom.get(i);
+                if(pomComplaint.getStav()==1){
+                    complaintListAccepted.add(pomComplaint);
+                    System.out.println(pomComplaint.getStav());
+                }
+
+            }
         }
+
         return complaintListAccepted;
     }
 
     @RequestMapping(value = "/reklamaceS", method = RequestMethod.GET)
     public List<Complaint> complaintSettled() {
-        complaintListSettled = new ArrayList<>();
+        List<Complaint>complaintListSettled = new ArrayList<>();
+        List<Complaint>complaintListPom;
             if(role==3) {
-                complaintListSettled = complaint.getComplaintSettled();
+                complaintListPom = complaint.getComplaintSettled();
+                for (int i=0; i<complaintListPom.size();i++){
+                    Complaint pomComplaint = complaintListPom.get(i);
+                    if(pomComplaint.getStav()==2){
+                        complaintListSettled.add(pomComplaint);
+                        System.out.println(pomComplaint.getStav());
+                    }
+
+                }
             }
         return complaintListSettled;
     }
 
     @RequestMapping(value = "/reklamaceR", method = RequestMethod.GET)
     public List<Complaint> complaintRejected() {
-        complaintListRejected = new ArrayList<>();
-                if(role==3) {
-                    complaintListRejected = complaint.getComplaintRejected();
+        List<Complaint>complaintListRejected = new ArrayList<>();
+        List<Complaint>complaintListPom;
+        if(role==3) {
+            complaintListPom = complaint.getComplaintAccepted();
+            for (int i=0; i<complaintListPom.size();i++){
+                Complaint pomComplaint = complaintListPom.get(i);
+                if(pomComplaint.getStav()==3){
+                    complaintListRejected.add(pomComplaint);
+                    System.out.println(pomComplaint.getStav());
                 }
+
+            }
+        }
         return complaintListRejected;
     }
 
@@ -178,69 +197,85 @@ public class Controller {
     }
 
     @RequestMapping(value = "/novyUzivatel", method = RequestMethod.POST)
-    public int /*ModelAndView*/ /*String*/ addUser(Model model, @RequestParam("userName") String userName,
+    public String addUser(Model model, @RequestParam("userName") String userName,
                                 @RequestParam("password") String password,
                                 @RequestParam("firstName") String firstName,
                                 @RequestParam("lastName") String lastName,
                                 @RequestParam("telefon") String telefon,
                                 @RequestParam("email") String email, @RequestParam("role") int newRole) {
-       /* System.out.println("jemeno: " + firstName + "primeno: " + lastName);
-        model.addAttribute("addUser", admin.addUser(userName, firstName, lastName, telefon, email, password, newRole));
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("/admin.xhtml");*/
-        Employee employee =(Employee) admin.addUser(userName, firstName, lastName, telefon, email, password, newRole);
-        //String status = "";
-        int status=0;
+
+        Employee employee =(Employee) admin.findUserByEmail(email);
+        String statusText="";
         if(employee!=null){
-            status=500;
+            statusText="email už je pouzivan";
         }
         else{
-            status=200;
+            admin.addUser(userName, firstName, lastName, telefon, email, password, newRole);
+
+            statusText="uzivatel vytvoren";
         }
 
-        //return modelAndView;
-        return status;
-        //System.out.println(status);
-        //return status;
+        return statusText;
+
     }
 
     @RequestMapping(value = "/editUserRole", method = RequestMethod.POST)
-    public ModelAndView editUserRole(Model model, @RequestParam("userName") String userName, @RequestParam("role") int newRole) {
+    public String editUserRole(Model model, @RequestParam("email") String email, @RequestParam("role") int newRole) {
 
-        model.addAttribute("editUserRole", admin.editUserRole(userName, newRole));
+        Employee employee = admin.findUserByEmail(email);
 
-        return modelAndView;
+        String statusText="";
+        if(employee!=null){
+            admin.editUserRole(employee.getUserName(),newRole);
+            statusText="role zmenena";
+        }
+        else{
+
+            statusText="role nezmenena";
+        }
+
+        return statusText;
     }
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
     public ModelAndView editPassword(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
-        model.addAttribute("editPassword", admin.editPassword(userName, password));
-        ModelAndView modelAndView = new ModelAndView();
+        ModelAndView modelAndView = new ModelAndView();        model.addAttribute("editPassword", admin.editPassword(userName, password));
+
         modelAndView.setViewName("/admin.xhtml");
         return modelAndView;
     }
 
     @RequestMapping(value = "/novaRekalamace", method = RequestMethod.POST)
-    public ModelAndView addComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("popisReklamace") String description,
+    public  String addComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("popisReklamace") String description,
                                      @RequestParam("datumVytvorení") String criateDate, @RequestParam("client") int client, @RequestParam("stavReklamace") int stav
     ) {
 
-        model.addAttribute("addReklamace", complaint.add(codeComplaint, description, criateDate, client, stav, userId));
-        //modelAndView.setViewName("/reklamace.xhtml");
-        //complaintView();
-        return modelAndView;
+        Object rezult =complaint.add(codeComplaint, description, criateDate, client, stav, userId);
+        String statusText="";
+        if(rezult==null){
+            statusText="reklamace nevytvoren";
+        }
+        else {
+            statusText="reklamace vytvoren";
+        }
+        return statusText;
+
     }
 
-    @RequestMapping(value = "/editRekalamace", method = RequestMethod.PATCH)
-    public ModelAndView ediComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("infoReklamace") String infoCmoplaint,
-                                     @RequestParam("datumVyreseni") String settlementDate, @RequestParam("stavReklamace") int stav
-    ) {
-        System.out.println("kodReklamace: "+codeComplaint);
-
-        model.addAttribute("editReklamace", complaint.edit(codeComplaint,stav, userId, infoCmoplaint, settlementDate));
-
-        //complaintView();
-        return modelAndView;
+    @RequestMapping(value = "/editRekalamace", method = RequestMethod.POST)
+    public  String ediComplaint(Model model, @RequestParam("kodReklamace") String codeComplaint, @RequestParam("infoReklamace") String infoCmoplaint,
+                                     @RequestParam("datumVyreseni") String settlementDate, @RequestParam("stavReklamace") int stav)
+    {
+        System.out.println("kodReklamace: "+ codeComplaint);
+        Object rezult = complaint.edit(codeComplaint,stav, userId, infoCmoplaint, settlementDate);
+        String statusText="";
+        if(rezult==null){
+            statusText="reklamace neupravena";
+        }
+        else {
+            statusText="reklamace upravena";
+        }
+        return statusText;
     }
 
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)

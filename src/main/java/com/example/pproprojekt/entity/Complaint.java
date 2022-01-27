@@ -31,7 +31,7 @@ public class Complaint {
     @Column(name = "DATUM_VYRESENI")
     private String settlementDate;
     @Column(name = "SKLADDILU_ID")
-    private Integer skladId;
+    private Integer skladId=7;
 
     public Complaint() {
     }

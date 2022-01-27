@@ -12,6 +12,9 @@
 
     <script type="text/javascript">
         function submit() {
+            document.getElementById("complaintS").value=" ";
+             document.getElementById("complaintA").replaceChild();
+            //document.getElementById("complaintR").replaceChild();
 
             if(document.getElementById("addReklamace").checked==true){
 
@@ -22,6 +25,7 @@
             else{
                 if (document.getElementById("editReklamace").checked==true){
                     console.log("ok");
+                    editRekalamce();
 
                 }
                 else {
@@ -30,9 +34,11 @@
 
             }
 
+            readReklamace();
+
         };
         async function   addReklamace() {
-            const kodReklamace = document.getElementById("kodReklamace").value;
+            var kodReklamace = document.getElementById("kodReklamace").value;
             const popisReklamace = document.getElementById("popisReklamace").value;
             const datumVytvoreni = document.getElementById("datumVytvoreni").value;
             if((kodReklamace=="")||(popisReklamace=="")||(datumVytvoreni=="")){
@@ -79,10 +85,10 @@
                     dataBody.append('client', klient);
                     dataBody.append('stavReklamace', stav);
 
-                    var status;
+                    var status="";
                     var config = {
                         method: 'post',
-                        url: 'http://localhost:8080/novaRekalamace',
+                        url: 'http://127.0.0.1:8080/novaRekalamace',
                         headers: {
                             //...dataBody.getHeaders()
                         },
@@ -91,57 +97,81 @@
 
                     axios(config)
                         .then(function (response) {
-                            console.log(JSON.stringify(response.data));
-                            status = response.status;
+                            //var statusText="ok-uzivatel vytvoren";
+                            //status=status+statusText;
+                            document.getElementById("status").disabled = false;
+                            document.getElementById("status").value =response.data.toString();
+                            document.getElementById("status").disabled = true;
                         })
                         .catch(function (error) {
                             console.log(error);
-                            status = error.status;
+                            document.getElementById("status").disabled = false;
+                            document.getElementById("status").value ="chyba";
+                            document.getElementById("status").disabled = true;
                         })
-                    document.getElementById("status").value = status;
-                    document.getElementById("status").disabled = false;
+
+
 
                 }
             }
         };
-        async function editRekalamce(){
-/*
-            const data = { kodReklamace: document.getElementById("kodReklamace").value,
-                infoReklamace: document.getElementById("infoReklamace").value,
-                datumVyreseni: document.getElementById("datumVyreseni").value,
-                stavReklamace: stav
-*/
+        async function editRekalamce() {
 
-           const  kodReklamace = document.getElementsByClassName("kodReklamace");
-           var stav = $(".stav:checked").val();
-           var axios = require('axios');
-            var FormData = require('form-data');
-            var dataBody = new FormData();
-            dataBody.append('kodReklamace', document.getElementById("kodReklamace"));
-            dataBody.append('infoReklamace', document.getElementById("infoReklamace"));
-            dataBody.append('datumVyreseni', document.getElementById("datumVyreseni"));
-            dataBody.append('stavReklamace', stav);
 
-            var config = {
-                method: 'patch',
-                //url: 'http://localhost:8080/editRekalamace',
-                url: 'http://127.0.0.1:8080/reklamaceR',
-                headers: {
-                    //...dataBody.getHeaders()
-                },
-                data : dataBody
-            };
+            var kodReklamace = document.getElementById("kodReklamace").value;
+            var infoReklamace = document.getElementById("infoReklamace").value;
+            var datumVyreseni = document.getElementById("datumVyreseni").value;
+            if ((kodReklamace == "") || (infoReklamace == "") || (datumVyreseni == "")) {
+                alert("musi se vyplnit následujcí pole kod reklamace, infromace o reklamaci a datum vyreseni");
+            } else {
+                var stav
+                if(document.getElementById("stavVyrizeno").checked == true)
+                {
+                    stav=2;
+                }
+                else {
+                    if(document.getElementById("stavZmitnuto").checked == true){
+                        stav=3;
+                    }
+                    else {
+                        alert("nevybran satv, nebo stav nastaven na prijato(u edatace raklamce nezle stav prijato");
+                    }
+                }
+                var dataBody = new FormData();
+                dataBody.append('kodReklamace', kodReklamace);
+                dataBody.append('infoReklamace', infoReklamace);
+                dataBody.append('datumVyreseni', datumVyreseni);
+                dataBody.append('stavReklamace', stav);
 
-            axios(config)
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                var config = {
+                    method: 'post',
+                    //url: 'http://localhost:8080/editRekalamace',
+                    url: 'http://127.0.0.1:8080/editRekalamace',
+                    headers: {
+                        //...dataBody.getHeaders()
+                    },
+                    data: dataBody
+                };
 
-        };
+                axios(config)
+                    .then(function (response) {
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
+                    });
+
+            }
+
+
+        }
         async function getReklamaceR() {
+           let listCmplaint =[];
             var config = {
                 method: 'get',
                 //url: 'http://localhost:8080/reklamaceR',
@@ -151,18 +181,50 @@
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                    return response.data
-                })
-                .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                    return response.date;
+                    const rezults = response.data;
+
+                    for (let i in rezults) {
+                        let rezult = rezults[i];
+                        //console.log(rezult);
+                        let stringRezult = "kod reklamace:, " + rezult.codeCmplaint.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
+                       // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
+                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
+                        //console.log(stringRezult);
+                        listCmplaint[i] = stringRezult;
+                        console.log(listCmplaint[i]);
+                    }
+
+                    listCmplaint.forEach(function(item) {
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(item);
+                        var buttonCopy=  document.createElement("button")
+                        var pom=""
+                        buttonCopy.innerHTML = "kopírovat";
+                        buttonCopy.addEventListener ("click", function() {
+                            const pomArray = item.split(",");
+                           // console.log(pomArray[1].toString());
+                            pom=pomArray[1];
+                           // console.log(pom);
+                            document.getElementById("kodReklamace").value=pom.toString();
+                           // console.log(pom);
+                        });
+
+
+                        li.appendChild(text);
+                        li.appendChild(buttonCopy);
+
+
+                        document.getElementById("complaintR").appendChild(li);
+                    });
+
+
                 })
                 .catch(function (error) {
-                   // console.log(error);
+                    console.log(error);
                 });
         }
         async function getReklamaceA() {
+            let listCmplaint =[];
             var config = {
                 method: 'get',
                 //url: 'http://localhost:8080/reklamace',
@@ -172,14 +234,51 @@
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                    return response.date;
+                    const rezults = response.data;
+
+                    for (let i in rezults) {
+                        let rezult = rezults[i];
+                        //console.log(rezult);
+                        let stringRezult = "kod reklamace:, " + rezult.stav.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
+                        // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
+                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
+                        //console.log(stringRezult);
+                        listCmplaint[i] = stringRezult;
+                        console.log(listCmplaint[i]);
+                    }
+
+                    listCmplaint.forEach(function(item) {
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(item);
+                        var buttonCopy=  document.createElement("button")
+                        var pom=""
+                        buttonCopy.innerHTML = "kopírovat";
+                        buttonCopy.addEventListener ("click", function() {
+                            const pomArray = item.split(",");
+                            // console.log(pomArray[1].toString());
+                            pom=pomArray[1];
+                            // console.log(pom);
+                            document.getElementById("kodReklamace").value=pom.toString();
+                            // console.log(pom);
+                        });
+
+
+                        li.appendChild(text);
+                        li.appendChild(buttonCopy);
+
+
+                        document.getElementById("complaintA").appendChild(li);
+                    });
+
+
                 })
                 .catch(function (error) {
                     //console.log(error);
                 });
         }
         async function getReklamaceS() {
+            //document.getElementById("complaintS").replaceChild();
+            let listCmplaint =[];
             var config = {
                 method: 'get',
                 //url: 'http://localhost:8080/reklamace',
@@ -189,8 +288,44 @@
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
-                    return response.data
+                    const rezults = response.data;
+
+                    for (let i in rezults) {
+                        let rezult = rezults[i];
+                        //console.log(rezult);
+                        let stringRezult = "kod reklamace:, " + rezult.codeCmplaint.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
+                        // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
+                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
+                        //console.log(stringRezult);
+                        listCmplaint[i] = stringRezult;
+                        console.log(listCmplaint[i]);
+                    }
+
+                    listCmplaint.forEach(function(item) {
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(item);
+                        var buttonCopy=  document.createElement("button")
+                        var pom=""
+                        buttonCopy.innerHTML = "kopírovat";
+                        buttonCopy.addEventListener ("click", function() {
+                            const pomArray = item.split(",");
+                            // console.log(pomArray[1].toString());
+                            pom=pomArray[1];
+                            // console.log(pom);
+                            document.getElementById("kodReklamace").value=pom.toString();
+                            // console.log(pom);
+                        });
+
+
+                        li.appendChild(text);
+                        li.appendChild(buttonCopy);
+
+
+                        document.getElementById("complaintS").appendChild(li);
+                    });
+
+
+
                 })
                 .catch(function (error) {
                     //console.log(error);
@@ -198,9 +333,13 @@
                 });
         }
         async function readReklamace(){
-           const  {reklamaceA} =getReklamaceA();
-           const  {reklamaceR} =getReklamaceR();
-           const  {reklamaceS} =getReklamaceS();
+            //document.getElementById("complaintS").value=" ";
+           // document.getElementById("complaintA").replaceChild();
+            //document.getElementById("complaintR").replaceChild();
+            console.log(document.getElementById("complaintS").children.length);
+            getReklamaceA();
+           getReklamaceR();
+           getReklamaceS();
 
 
         }
@@ -221,7 +360,7 @@
 
 
 </head>
-<body>
+<body onload="readReklamace()">
 <div class="form">
     <label>správa uživatelů</label>
     <br/>
@@ -276,22 +415,16 @@
 
     <button type="button" id="nactiReklamace" name="nactiReklamace" ondblclick="readReklamace()">ZobarazReklamace</button>
     <p>prijate:</p>
-    <ul>
-        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
-        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
-        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+
+    <ul id="complaintA">
     </ul>
     <p>vyřízené:</p>
-    <ul>
-        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
-        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
-        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+    <ul id="complaintS">
     </ul>
+
     <p>zamitnuté:</p>
-    <ul>
-        <li onclick="copy(this)" id="A" data-reklamace-type="ok">1</li>
-        <li onclick="copy(this)" id="S" data-reklamace-type="?">2</li>
-        <li onclick="copy(this)" id="R" data-reklamace-type="no">3</li>
+    <ul id="complaintR">
+
     </ul>
 </div>
 

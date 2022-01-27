@@ -41,18 +41,7 @@ public class Admin {
         return employee;
     }
 
-    private Employee findUserByEmail(String email) {
-        listEmployee=new ArrayList<>();
-        listEmployee = emploeeyRepo.findAll();
-
-        for(Employee em: listEmployee)
-            if(em.getEmail().equals(email)){
-                return em;
-            }
-
-        return null;
-    }
-    private Employee findUserByUseName(String userName)
+    public Employee findUserByUseName(String userName)
     {
         //zde nastava pravděpodobne chby
         listEmployee=new ArrayList<>();
@@ -67,6 +56,21 @@ public class Admin {
         }
         return null;
     }
+    public Employee findUserByEmail(String email){
+        listEmployee=new ArrayList<>();
+        listEmployee = emploeeyRepo.findAll();
+        Employee employee=null;
+
+
+        for(Employee em: listEmployee){
+            if(em.getEmail().equals(email)){
+                System.out.println(em.getUserName());
+            employee=em;
+
+            }
+        }
+        return employee;
+    }
 
     public Object editUserRole(String userName, int newRole) {
 
@@ -74,15 +78,15 @@ public class Admin {
 
         employee = findUserByUseName(userName);
         System.out.println(employee.getUserName());
-       if(employee!=null) {
-           //emploeeyRepo.delete(employee);
-           employee.setRole(newRole);
-           emploeeyRepo.save(employee);//aktualizae user
+        if(employee!=null) {
+            //emploeeyRepo.delete(employee);
+            employee.setRole(newRole);
+            emploeeyRepo.save(employee);//aktualizae user
 
-       }
-       else {
-           System.out.println("chybne user name");
-       }
+        }
+        else {
+            System.out.println("chybne user name");
+        }
         return employee;
     }
 
