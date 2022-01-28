@@ -26,8 +26,10 @@
                       editHeslo();
                   }
                   else {
-                      console.log("ok");
-                     editRoleUser()
+                      if (document.getElementById("editRole").checked == true) {
+                          console.log("ok");
+                          editRoleUser()
+                      }
                   }
               }
               reload();
@@ -190,6 +192,7 @@
         }
 
        async function reload() {
+          // document.getElementById("empolees").innerHTML = "";
            const listEmployees = [];
 
            var config = {
@@ -232,7 +235,7 @@
                        li.appendChild(buttonCopy);
 
 
-                       document.getElementById("items").appendChild(li);
+                       document.getElementById("empolees").appendChild(li);
                    });
 
 
@@ -290,7 +293,7 @@
     <label>změna hesla: </label>
     <input type="radio" id="newPassword" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <label>změna role user:</label>
-    <input type="radio" id="edtiRole" name="akceTyp" class="akceTyp" value="rkelamace"/>
+    <input type="radio" id="editRole" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <br/>
     <button onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
@@ -302,7 +305,7 @@
 
 <div class="vypisZamestnancu" >
     <h1>Výpis Zaměstnanců:</h1> (role zaměstnanců: admin=1, skald=2, reklamace=3)
-    <ul id="items">
+    <ul id="empolees">
     </ul>
 </div>
 
