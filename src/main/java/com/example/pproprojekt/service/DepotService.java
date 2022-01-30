@@ -42,7 +42,6 @@ public class DepotService {
             }
 
         }
-        depotRepo.delete(depot);
         int countPartOld = depot.getCountPart();
         int countPartNew = countPartOld+countPart;
         depot.setCountPart(countPartNew);
@@ -53,6 +52,7 @@ public class DepotService {
 
     public Object removePiecePart(String namePart, int countPart) {
 
+        Depot depot=null;
         listPart = new ArrayList<>();
         listPart = depotRepo.findAll();
         for (Depot part : listPart) {
@@ -61,19 +61,23 @@ public class DepotService {
             }
 
         }
-        depotRepo.delete(depot);
-        int countPartOld = depot.getCountPart();
-        int countPartNew = countPartOld - countPart;
-        if (countPartNew >= 0){
-            depot.setCountPart(countPartNew);
-        }
-        else {
-            System.out.println("malodilu na skladu");
-            depot.setCountPart(0);
-        }
-        depotRepo.save(depot);
+        if(depot!=null) {
 
-        return null;
+            int countPartOld = depot.getCountPart();
+            int countPartNew = countPartOld - countPart;
+            if (countPartNew >= 0) {
+                depot.setCountPart(countPartNew);
+            } else {
+                System.out.println("malodilu na skladu");
+                depot.setCountPart(0);
+            }
+            depotRepo.save(depot);
+
+        }
+        else{
+            depot=null;
+        }
+        return depot;
     }
 
     public List<Depot> getAllPart() {

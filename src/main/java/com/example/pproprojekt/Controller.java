@@ -38,6 +38,8 @@ public class Controller {
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView modelAndView = new ModelAndView();
+        userId=-1;
+        role=0;
         modelAndView.setViewName("index.xhtml");
         this.modelAndView = modelAndView;
 
@@ -48,6 +50,8 @@ public class Controller {
     public ModelAndView login(Model model, @RequestParam("userEmail") String email,
                               @RequestParam("userPassword") String password) {
 
+        userId=-1;
+        role=0;
         System.out.println("ok");
         System.out.println(password);
         System.out.println(email);
@@ -72,9 +76,7 @@ public class Controller {
             ModelAndView modelAndView = new ModelAndView();
             switch (role) {
                 case 1:
-// sesion + map map /admin
-                    //nevyt aret instance
-                    //modelAndView = adminView();
+
                     modelAndView.setViewName("/admin.xhtml");
 
 
@@ -83,16 +85,15 @@ public class Controller {
 
                     modelAndView.setViewName("/sklad.xhtml");
 
-                    //modelAndView = complaintView();
+
                     break;
                 case 3:
 
                     modelAndView.setViewName("/reklamace.xhtml");
 
-                    //modelAndView = depotView();
                     break;
                 default:
-                    //response.getWriter().println("Chybana role uzivatele v db");
+
                     modelAndView.setViewName("/index.xhtml");
 
                     break;
@@ -102,7 +103,7 @@ public class Controller {
         }
             else{
             ModelAndView modelAndView = new ModelAndView();
-                //modelAndView.setViewName("/login.xhtml");
+
             modelAndView.setViewName("/login.xhtml");
             this.modelAndView = modelAndView;
 
@@ -223,10 +224,10 @@ public class Controller {
     public String editUserRole(Model model, @RequestParam("email") String email, @RequestParam("role") int newRole) {
 
         Employee employee = admin.findUserByEmail(email);
-
+       employee = (Employee) admin.editUserRole(employee.getUserName(),newRole);
         String statusText="";
         if(employee!=null){
-            admin.editUserRole(employee.getUserName(),newRole);
+
             statusText="role zmenena";
         }
         else{
@@ -238,11 +239,19 @@ public class Controller {
     }
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
-    public ModelAndView editPassword(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
-        ModelAndView modelAndView = new ModelAndView();        model.addAttribute("editPassword", admin.editPassword(userName, password));
+    public String editPassword(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
+        String statusString;
+        Employee employee=(Employee) admin.editPassword(userName, password);
 
-        modelAndView.setViewName("/admin.xhtml");
-        return modelAndView;
+        if(employee!=null){
+            statusString="heslo zmeneno";
+        }
+        else {
+            statusString="ne heslo zmeneno";
+        }
+
+
+        return statusString;
     }
 
     @RequestMapping(value = "/novaRekalamace", method = RequestMethod.POST)
@@ -290,7 +299,7 @@ public class Controller {
 
     }
 
-    @RequestMapping(value = "/addItemPiece", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/addItemPiece", method = RequestMethod.POST)
     public ModelAndView addItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
     ) {
 
@@ -301,7 +310,7 @@ public class Controller {
 
     }
 
-    @RequestMapping(value = "/removeItemPiece", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/removeItemPiece", method = RequestMethod.POST)
     public ModelAndView removeItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) {
 
         System.out.println("nazevDilu: "+namePart);

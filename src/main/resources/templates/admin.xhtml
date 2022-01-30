@@ -137,10 +137,15 @@
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
                     })
                     .catch(function (error) {
                         console.log(error);
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
                     });
             }
         }
@@ -181,12 +186,15 @@
 
                 axios(config)
                     .then(function (response) {
-                       // console.log(JSON.stringify(response.data));
-                        console.log(response.status);
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
                     })
                     .catch(function (error) {
-                        console.log("error");
-                        alert(error.constructor);
+                        console.log(error);
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
                     });
             }
         }
@@ -210,7 +218,7 @@
                    for (let i in rezults) {
                        let rezult = rezults[i];
                        //console.log(rezult);
-                       let stringRezult = "login:, " + rezult.userName.toString() + ","+ " jmeno: " + rezult.firstName.toString()+"," + " primeni: " + rezult.lastName.toString() + " role: " + rezult.role.toString();
+                       let stringRezult = "login:, " + rezult.userName.toString() + ","+ " jmeno:," + rezult.firstName.toString()+"," + " primeni:, " + rezult.lastName.toString() + " role: ," + rezult.role.toString()+","+"emil:,"+rezult.email.toString();
                        //console.log(stringRezult);
                        listEmployees[i] = stringRezult;
                        console.log(listEmployees[i]);
@@ -219,15 +227,19 @@
                        var li = document.createElement("li");
                        var text = document.createTextNode(item);
                        var buttonCopy=  document.createElement("button")
-                       var pom=""
+                       var pomUser="";
+                       var pomEmail="";
                        buttonCopy.innerHTML = "kopírovat";
                        buttonCopy.addEventListener ("click", function() {
                            const pomArray = item.split(",");
                            console.log(pomArray[1].toString());
-                           pom=pomArray[1];
-                           console.log(pom);
-                           document.getElementById("login").value=pom.toString();
-                           console.log(pom);
+                           pomUser=pomArray[1];
+                           pomEmail=pomArray[8];
+
+                           console.log(pomEmail.toString());
+
+                           document.getElementById("login").value= pomUser.toString();
+                           document.getElementById("email").value = pomEmail.toString();
                        });
 
 
@@ -275,7 +287,8 @@
     <input type="text" id="telefon" name="tlefon"/>
     <br/>
     <label for="email">email:</label>
-    <label for="email"></label><input type="text" id="email" name="email"/>
+    <label for="email"></label>
+    <input type="text" id="email" name="email"/>
     <br/>
     <label>role:</label>
     <br/>

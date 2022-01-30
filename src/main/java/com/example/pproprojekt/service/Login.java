@@ -40,15 +40,15 @@ public class Login {
 
     public Employee login(String email, String password) {
         listEmployee = new ArrayList<>();
+        ///this.employee=null;
+        Employee employeePom=null;
         listEmployee = emploeeyRepo.findByEmailAndPassword(email, password);
         for (Employee em: listEmployee) {
             if ((email.equals(em.getEmail())) && (password.equals(em.getPassword()))) {
-                employee = em;
-            } else {
-                System.out.println("chyne prihalsovaci udaje");
+                employeePom = em;
             }
         }
-        return employee;
+        return employeePom;
     }
 }
 
