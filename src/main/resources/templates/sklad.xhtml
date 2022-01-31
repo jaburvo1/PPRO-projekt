@@ -13,7 +13,24 @@
 
         const url = "http://127.0.0.1:8080/";
         function submit(){
-            const typAkce = $(".skladDil:checked").val();
+            var typAkce;
+            if(document.getElementById("novyDil").checked == true){
+                typAkce=1;
+            }
+            else {
+                if(document.getElementById("naskladnitDil").checked == true) {
+                    typAkce=2;
+                }
+                    else{
+                        if(document.getElementById("vyskladnitDil").checked == true){
+                            typAkce=3;
+                        }
+                        else{
+                            typAkce=0;
+                        }
+                    }
+                }
+
             if(typAkce==1){
                 novyDill();
             }
@@ -23,34 +40,87 @@
                     naskladniDil();
                 }
                 else {
-                    vyskladniDil();
+                    if(typAkce==3) {
+                        vyskladniDil();
+                    }
+                    else {
+                        alert("vyberte akci");
+                    }
                 }
             }
             reload();
         }
         async function   novyDill(){
-            const data = {
-                nazevDilu: document.getElementById("nazevDilu").value,
-                druhDilu: document.getElementById("druhDilu").value,
-                typDilu: document.getElementById("typDilu").value,
-                parametryDilu: document.getElementById("parametryDilu").value,
-                vyrobceDilu: document.getElementById("vyrobceDilu").value,
-                pocetKusu: document.getElementById("pocetKusu").value,
+            var dataBody = new FormData();
+            dataBody.append('druhDilu', '"RAM"');
+            dataBody.append('typDilu', '"DDR4"');
+            dataBody.append('parametryDilu', '"16GB"');
+            dataBody.append('vyrobceDilu', '"vyrobce"');
+            dataBody.append('pocetKusu', '100');
+            dataBody.append('nazevdilu', 'RAM');
 
+            var config = {
+                method: 'post',
+               // url: 'http://localhost:8080/addItem',
+                url: ""+url+"addItem",
+                headers: {
+                   // ...dataBody.getHeaders()
+                },
+                data : dataBody
             };
-            const response = await axios.post('https://localhost:8080/addItem', data);
-            const dil =response.data.nazevDilu;
+
+            axios(config)
+                .then(function (response) {
+                    document.getElementById("status").disabled = false;
+                    document.getElementById("status").value =response.data.toString();
+                    document.getElementById("status").disabled = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    document.getElementById("status").disabled = false;
+                    document.getElementById("status").value ="chyba";
+                    document.getElementById("status").disabled = true;
+                });
         }
 
         async function naskladniDil(){
+            const namePart = document.getElementById("nazevDilu").value;
+            const countPart = document.getElementById("pocetKusu").value;
 
-            const data = {
-                nazevDilu: document.getElementById("nazevDilu").value,
-                pocetKusu: document.getElementById("pocetKusu").value,
-            };
-            const response = await axios.patch('https://localhost:8080/addItemPiece', data);
-            const dil =response.data.nazevDilu;
+            if((namePart=="")||(countPart=="")){
+                alert("musi byt vypneno nzev dilu a pocet kusu")
+            }
+            else
+            {
+                var dataBody = new FormData();
+                dataBody.append('nazevdilu', namePart);
+                dataBody.append('pocetKusu', countPart);
 
+                var config = {
+                    method: 'post',
+                    //url: 'http://localhost:8080/removeItemPiece',
+                    url: ''+url+'addItemPiece',
+                    headers: {
+                        //...dataBody.getHeaders()
+                    },
+                    data: dataBody
+                };
+
+                axios(config)
+                    .then(function (response) {
+                        //var statusText="ok-uzivatel vytvoren";
+                        //status=status+statusText;
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
+                    })
+            }
         }
 
         async function vyskladniDil(){
@@ -78,45 +148,84 @@
 
                 axios(config)
                     .then(function (response) {
-                        console.log(JSON.stringify(response.data));
+                        //var statusText="ok-uzivatel vytvoren";
+                        //status=status+statusText;
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value =response.data.toString();
+                        document.getElementById("status").disabled = true;
                     })
                     .catch(function (error) {
                         console.log(error);
-                    });
+                        document.getElementById("status").disabled = false;
+                        document.getElementById("status").value ="chyba";
+                        document.getElementById("status").disabled = true;
+                    })
             }
 
         }
 
         async function reload(){
-            const result = getSklad();
-            console.log(result);
-            console.log("ok");
+            document.getElementById("listPart").innerHTML = "";
+            getSklad();
+
         }
 
         function getSklad(){
+           const listParts =[];
             var config = {
                 method: 'get',
-                url: 'http://localhost:8080/sklad',
+                //url: 'http://localhost:8080/sklad',
+                url: ''+url+'sklad',
                 headers: { }
             };
 
             axios(config)
                 .then(function (response) {
-                    console.log(JSON.stringify(response.data));
+
+                    const rezults = response.data;
+                    console.log(rezults);
+                    for (let i in rezults) {
+                        let rezult = rezults[i];
+                        //console.log(rezult);
+                        let stringRezult = "nazvDil :,"+rezult.namePart.toString()+"," + "druhDilu :,"+rezult.typePart.toString()+","+"typDilu :,"+ rezult.subtypePart.toString()+","+"parametryDilu :,"+rezult.parametrsPart.toString()+","+"pocetKusu: ,"+rezult.countPart.toString()+","
+                        //console.log(stringRezult);
+                        listParts[i] = stringRezult;
+                        console.log(listParts[i]);
+                    }
+                    listParts.forEach(function(item) {
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(item);
+                        var buttonCopy=  document.createElement("button")
+                        var pomPart="";
+                        buttonCopy.innerHTML = "kopírovat";
+                        buttonCopy.addEventListener ("click", function() {
+                            const pomArray = item.split(",");
+                            console.log(pomArray[1].toString());
+                            pomPart=pomArray[1];
+
+
+                            document.getElementById("nazevDilu").value= pomPart.toString();
+
+                        });
+
+
+                        li.appendChild(text);
+                        li.appendChild(buttonCopy);
+
+
+                        document.getElementById("listPart").appendChild(li);
+                    });
+
+
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
-        function copyFrom(){
-            document.getElementById("nazevDilu").innerText="ok";
-            console.log("ok");
-
-        }
 
     </script>
 </head>
-<body>
+<body onload="reload()">
 
 <div class="form">
     <label>správa uživatelů</label>
@@ -150,11 +259,16 @@
     <br/>
     <button type="button" id="ok" name="ok" ondblclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete" >vymaž</button>
+    <a href="/logout">Odhlaseni</a>
+    <br></br>
+    <input type="text" id="status" name="status" disabled="disabled"/>
 
 </div>
 <div class="vypisSklad">
-    <button type="button" id="edit" name="edit" ondblclick="copyFrom()">edit</button>
     <button type="button" id="nactiSklad" name="nactiSklad" ondblclick="reload()">ZobarazSklad</button>
+    <ul id="listPart">
+
+    </ul>
 </div>
 </body>
 </html>

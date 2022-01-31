@@ -11,10 +11,9 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        const url = "http://127.0.0.1:8080/";
         function submit() {
             document.getElementById("complaintS").value=" ";
-             document.getElementById("complaintA").replaceChild();
-            //document.getElementById("complaintR").replaceChild();
 
             if(document.getElementById("addReklamace").checked==true){
 
@@ -34,7 +33,7 @@
 
             }
 
-            readReklamace();
+            read();
 
         };
         async function   addReklamace() {
@@ -65,7 +64,12 @@
                         if (document.getElementById("klient3").checked == true) {
                             klient = 3;
                         } else {
-                            klient = 0;
+                            if(document.getElementById("klientPole").value==""){
+                                klient = 0;
+                            }
+                            else {
+                                klient=document.getElementById("klientPole").value;
+                            }
                         }
                     }
                 }
@@ -186,12 +190,10 @@
                     for (let i in rezults) {
                         let rezult = rezults[i];
                         //console.log(rezult);
-                        let stringRezult = "kod reklamace:, " + rezult.codeCmplaint.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
-                       // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
-                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
-                        //console.log(stringRezult);
-                        listCmplaint[i] = stringRezult;
-                        console.log(listCmplaint[i]);
+                        var stringRezult1 = "kodReklamace:, " + rezult.codeCmplaint.toString() + ","+ " popsis:, " + rezult.deiscription.toString()+","+"datumVytvoreni:, "+rezult.criateDate.toString()+","+"infromaReklamace:, "+rezult.criateDate.toString()+",";
+                        var stringRezult2="klinet:, "+rezult.client.toString()+", "+"zamestnanec:, "+rezult.employId.toString();
+
+                        listCmplaint[i] = stringRezult1+stringRezult2;
                     }
 
                     listCmplaint.forEach(function(item) {
@@ -239,12 +241,10 @@
                     for (let i in rezults) {
                         let rezult = rezults[i];
                         //console.log(rezult);
-                        let stringRezult = "kod reklamace:, " + rezult.stav.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
-                        // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
-                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
-                        //console.log(stringRezult);
-                        listCmplaint[i] = stringRezult;
-                        console.log(listCmplaint[i]);
+                        var stringRezult1 = "kodReklamace:, " + rezult.codeCmplaint.toString() + ","+ " popsis:, " + rezult.deiscription.toString()+","+"datumVytvoreni:, "+rezult.criateDate.toString()+","+"infromaReklamace:, "+rezult.criateDate.toString()+",";
+                        var stringRezult2="klinet:, "+rezult.client.toString()+", "+"zamestnanec:, "+rezult.employId.toString();
+
+                        listCmplaint[i] = stringRezult1+stringRezult2;
                     }
 
                     listCmplaint.forEach(function(item) {
@@ -282,7 +282,7 @@
             var config = {
                 method: 'get',
                 //url: 'http://localhost:8080/reklamace',
-                url: 'http://127.0.0.1:8080/reklamaceS',
+                url: ""+url+"reklamaceS",
                 headers: {}
             };
 
@@ -293,26 +293,23 @@
                     for (let i in rezults) {
                         let rezult = rezults[i];
                         //console.log(rezult);
-                        let stringRezult = "kod reklamace:, " + rezult.codeCmplaint.toString(); //+ ","+ " popsis:, " + rezult.toString()+"," + " inforamce,: " + rezult.lastName.toString() +"," + " datum vytvoreni,: " + rezult.role.toString()+","
-                        // +"datum vyreseni:," + ","+"userId:"+","+"klinet:"+;
-                        //let stringRezult = "kkk,kkk,jkk,kkk,kkk,kkkkk";
-                        //console.log(stringRezult);
-                        listCmplaint[i] = stringRezult;
-                        console.log(listCmplaint[i]);
+                        var stringRezult1 = "kodReklamace:, " + rezult.codeCmplaint.toString() + ","+ " popsis:, " + rezult.deiscription.toString()+","+"datumVytvoreni:, "+rezult.criateDate.toString()+","+"infromaReklamace:, "+rezult.criateDate.toString()+",";
+                        var stringRezult2="klinet:, "+rezult.client.toString()+", "+"zamestnanec:, "+rezult.employId.toString();
+
+                        listCmplaint[i] = stringRezult1+stringRezult2;
                     }
 
                     listCmplaint.forEach(function(item) {
                         var li = document.createElement("li");
                         var text = document.createTextNode(item);
                         var buttonCopy=  document.createElement("button")
-                        var pom=""
+
                         buttonCopy.innerHTML = "kopírovat";
                         buttonCopy.addEventListener ("click", function() {
                             const pomArray = item.split(",");
                             // console.log(pomArray[1].toString());
-                            pom=pomArray[1];
                             // console.log(pom);
-                            document.getElementById("kodReklamace").value=pom.toString();
+                            document.getElementById("kodReklamace").value=pomArray[1].toString();
                             // console.log(pom);
                         });
 
@@ -332,20 +329,69 @@
                     return error;
                 });
         }
-        async function readReklamace(){
-            //document.getElementById("complaintS").value=" ";
-           // document.getElementById("complaintA").replaceChild();
-            //document.getElementById("complaintR").replaceChild();
-            console.log(document.getElementById("complaintS").children.length);
-            //root.getElementsByTagName("li");
+        async function getClient(){
+            let listClient =[];
+            var config = {
+                method: 'get',
 
+                url: ""+ url+"klientList",
+                headers: {}
+            };
+
+            axios(config)
+                .then(function (response) {
+                    const rezults = response.data;
+
+                    for (let i in rezults) {
+                        let rezult = rezults[i];
+
+                        var stringRezult = "id:,"+rezult.idClient.toString()+",";
+                        listClient[i] = stringRezult;
+
+                    }
+
+                    listClient.forEach(function(item) {
+                        var li = document.createElement("li");
+                        var text = document.createTextNode(item);
+                        var buttonCopy=  document.createElement("button")
+
+                        buttonCopy.innerHTML = "kopírovat";
+                        buttonCopy.addEventListener ("click", function() {
+                            const pomArray = item.split(",");
+
+                            document.getElementById("klientPole").value=pomArray[1].toString();
+                             console.log(pomArray[1].toString());
+                        });
+
+
+                        li.appendChild(text);
+                        li.appendChild(buttonCopy);
+
+
+                        document.getElementById("klientList").appendChild(li);
+                    });
+
+
+
+                })
+                .catch(function (error) {
+                    //console.log(error);
+                    return error;
+                });
+
+        }
+        async function read(){
+
+            console.log(document.getElementById("complaintS").children.length);
             document.getElementById("complaintA").innerHTML = "";
             document.getElementById("complaintS").innerHTML = "";
             document.getElementById("complaintR").innerHTML = "";
+            document.getElementById("klientList").innerHTML = "";
 
             getReklamaceA();
            getReklamaceR();
            getReklamaceS();
+           getClient();
 
 
         }
@@ -366,7 +412,7 @@
 
 
 </head>
-<body onload="readReklamace()">
+<body onload="read()">
 <div class="form">
     <label>správa uživatelů</label>
     <br/>
@@ -410,16 +456,19 @@
     <input type="radio" id="klient2" name="klient"  class="klient" value="2"/>
     <label>klient3</label>
     <input type="radio" id="klient3" name="klient"  class="klient" value="3"/>
+    <input type="text" id="klientPole" name="klientPole"/>
     <br/>
     <button onclick="submit()">ok</button>
     <button type="reset" id="delete" name="delete">vymaž</button>
+    <a href="/logout">Odhlaseni</a>
+
     <br/>
     <input type="text" id="status" name="status" disabled="disabled"/>
 </div>
 
 <div class="vypisRekalamci">
 
-    <button type="button" id="nactiReklamace" name="nactiReklamace" ondblclick="readReklamace()">ZobarazReklamace</button>
+    <button type="button" id="nactiReklamace" name="nactiReklamace" ondblclick="read()">ZobarazReklamace</button>
     <p>prijate:</p>
 
     <ul id="complaintA">
@@ -430,8 +479,12 @@
 
     <p>zamitnuté:</p>
     <ul id="complaintR">
-
     </ul>
+    <p>klienti:</p>
+    <ul id="klientList">
+    </ul>
+
+
 </div>
 
 </body>

@@ -1,9 +1,11 @@
 package com.example.pproprojekt;
 
+import com.example.pproprojekt.entity.Client;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
 
+import com.example.pproprojekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,10 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import com.example.pproprojekt.service.Admin;
-import com.example.pproprojekt.service.ComplaintService;
-import com.example.pproprojekt.service.DepotService;
-import com.example.pproprojekt.service.Login;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,8 @@ public class Controller {
     private DepotService depot;
     @Autowired
     private ComplaintService complaint;
+    @Autowired
+    private ClientService client;
     private ModelAndView modelAndView;
 
 
@@ -121,7 +121,7 @@ public class Controller {
 
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET)
-    public List<Employee> adminView() {
+    public List<Employee> employeeView() {
         List<Employee> employees = new ArrayList<>();
         if(role==1) {
             employees = admin.findAll();
@@ -288,37 +288,67 @@ public class Controller {
     }
 
     @RequestMapping(value = "/addItem", method = RequestMethod.POST)
-    public ModelAndView addItem(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
+    public String addItem(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
                                 @RequestParam("nazevdilu") String namePart, @RequestParam("parametryDilu") String parametrsPart, @RequestParam("vyrobceDilu") String manufacturePart,
                                 @RequestParam("pocetKusu") int countPart) {
 
-        model.addAttribute("addDil", depot.addPart(namePart, typePart, subtypePart, parametrsPart, manufacturePart, countPart));
-
-        //modelAndView = depotView();
-        return modelAndView;
-
+        String statusText = "";
+        Object rezult = depot.addPart(namePart, typePart, subtypePart, parametrsPart, manufacturePart, countPart);
+        if(rezult==null){
+            statusText="ne pridan novy dill";
+        }
+        else {
+            statusText="pridan novy dill";
+        }
+       return statusText;
     }
 
     @RequestMapping(value = "/addItemPiece", method = RequestMethod.POST)
-    public ModelAndView addItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
+    public String addItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
     ) {
 
-        model.addAttribute("addkusDilu", depot.addPiecePart(namePart, countPart));
+        String statusText="";
+        Object rezult= depot.addPiecePart(namePart, countPart);
 
-        //modelAndView = depotView();
-        return modelAndView;
-
+        if(rezult!=null){
+            statusText="dil ne naskladnen";
+        }
+        else {
+            statusText="dil naskladnen";
+        }
+        return statusText;
     }
+
 
     @RequestMapping(value = "/removeItemPiece", method = RequestMethod.POST)
-    public ModelAndView removeItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) {
+    public String removeItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) {
+        String statusText="";
+        Depot rezult= (Depot) depot.findAll(namePart);
 
-        System.out.println("nazevDilu: "+namePart);
-        model.addAttribute("removekusDilu", depot.removePiecePart(namePart, countPart));
+        if(rezult==null){
+            statusText="nazev dilui neni evidenci skladu";
+        }
+        else {
+            if(rezult.getCountPart()>=countPart) {
+                depot.removePiecePart(namePart, countPart);
+                statusText = "dil vyskladnen";
+            }
+            else {
+                statusText = "dil ne vyskladnen";
+            }
+        }
 
-       // modelAndView = depotView();
-        return modelAndView;
-
+        return statusText;
     }
+    @RequestMapping(value = "/klientList", method = RequestMethod.GET)
+    public List<Client> clientView(){
+
+        List<Client> clients = new ArrayList<>();
+        if(role==3) {
+            clients= client.findAll();
+        }
+        return clients;
+    }
+
 
 }

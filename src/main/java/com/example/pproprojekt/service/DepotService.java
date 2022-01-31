@@ -35,6 +35,7 @@ public class DepotService {
 
         listPart = new ArrayList<>();
         listPart=depotRepo.findAll();
+
         for (Depot part: listPart) {
             if(namePart.equals(part.getNamePart()))
             {
@@ -47,7 +48,7 @@ public class DepotService {
         depot.setCountPart(countPartNew);
         depotRepo.save(depot);
 
-        return null;
+        return depot;
     }
 
     public Object removePiecePart(String namePart, int countPart) {
@@ -67,11 +68,12 @@ public class DepotService {
             int countPartNew = countPartOld - countPart;
             if (countPartNew >= 0) {
                 depot.setCountPart(countPartNew);
+                depotRepo.save(depot);
             } else {
                 System.out.println("malodilu na skladu");
-                depot.setCountPart(0);
+                depot=null;
             }
-            depotRepo.save(depot);
+
 
         }
         else{
@@ -84,5 +86,16 @@ public class DepotService {
         List<Depot> partsList = new ArrayList<>();
         partsList = depotRepo.findAll();
         return partsList;
+    }
+    public Object findAll(String namePart){
+        Depot depot=null;
+        listPart = new ArrayList<>();
+        listPart = depotRepo.findAll();
+        for (Depot part : listPart) {
+            if (namePart.equals(part.getNamePart())) {
+                depot = part;
+            }
+        }
+        return depot;
     }
 }
