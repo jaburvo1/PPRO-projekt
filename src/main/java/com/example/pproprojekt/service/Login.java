@@ -1,16 +1,12 @@
 package com.example.pproprojekt.service;
 
 import com.example.pproprojekt.entity.Employee;
+import com.example.pproprojekt.repozitory.EmploeeyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.pproprojekt.repozitory.EmploeeyRepository;
-
-import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.persistence.Persistence.createEntityManagerFactory;
 
 @Service
 public class Login {
@@ -22,7 +18,7 @@ public class Login {
     @Autowired
     private EmploeeyRepository emploeeyRepo;
 
-    private EntityManager entityManager;
+   // private EntityManager entityManager;
     private List<Employee> listEmployee;
 
 

@@ -11,7 +11,7 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        const url = "http://127.0.0.1:8080/";
+        const url = "http://localhost:8080/";
         function submit() {
             document.getElementById("complaintS").value=" ";
 
@@ -92,7 +92,7 @@
                     var status="";
                     var config = {
                         method: 'post',
-                        url: 'http://127.0.0.1:8080/novaRekalamace',
+                        url: ""+url+"novaRekalamace",
                         headers: {
                             //...dataBody.getHeaders()
                         },
@@ -149,8 +149,7 @@
 
                 var config = {
                     method: 'post',
-                    //url: 'http://localhost:8080/editRekalamace',
-                    url: 'http://127.0.0.1:8080/editRekalamace',
+                    url: ""+url +"editRekalamace",
                     headers: {
                         //...dataBody.getHeaders()
                     },
@@ -178,8 +177,7 @@
            let listCmplaint =[];
             var config = {
                 method: 'get',
-                //url: 'http://localhost:8080/reklamaceR',
-                url: 'http://127.0.0.1:8080/reklamaceR',
+                url: ""+url+"reklamaceR",
                 headers: {}
             };
 
@@ -229,8 +227,8 @@
             let listCmplaint =[];
             var config = {
                 method: 'get',
-                //url: 'http://localhost:8080/reklamace',
-                url: 'http://127.0.0.1:8080/reklamaceA',
+
+                url: ""+url+"reklamaceA",
                 headers: {}
             };
 

@@ -4,7 +4,6 @@ import com.example.pproprojekt.entity.Client;
 import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
-
 import com.example.pproprojekt.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
