@@ -204,7 +204,7 @@ public class Controller {
                                 @RequestParam("telefon") String telefon,
                                 @RequestParam("email") String email, @RequestParam("role") int newRole) {
 
-        Employee employee =(Employee) admin.findUserByEmail(email);
+        Employee employee = admin.findUserByEmail(email);
         String statusText="";
         if(employee!=null){
             statusText="email už je pouzivan";
@@ -223,7 +223,7 @@ public class Controller {
     public String editUserRole(Model model, @RequestParam("email") String email, @RequestParam("role") int newRole) {
 
         Employee employee = admin.findUserByEmail(email);
-       employee = (Employee) admin.editUserRole(employee.getUserName(),newRole);
+       employee = (Employee) admin.editUserRole(employee.getEmail(),newRole);
         String statusText="";
         if(employee!=null){
 
@@ -238,9 +238,12 @@ public class Controller {
     }
 
     @RequestMapping(value = "/editPassword", method = RequestMethod.POST)
-    public String editPassword(Model model, @RequestParam("userName") String userName, @RequestParam("password") String password) {
+    public String editPassword(Model model, @RequestParam("email") String email, @RequestParam("password") String password) {
         String statusString;
-        Employee employee=(Employee) admin.editPassword(userName, password);
+        Employee employee = admin.findUserByEmail(email);
+        System.out.println(employee.getUserName());
+        System.out.println("heslo"+password);
+         employee=(Employee) admin.editPassword(employee.getEmail(), password);
 
         if(employee!=null){
             statusString="heslo zmeneno";

@@ -115,20 +115,20 @@
 
         async  function editHeslo() {
 
-            const userName = document.getElementById("login").value;
+            const email = document.getElementById("email").value;
             const password= document.getElementById("password").value
-            if ((password== "") || (userName == "")) {
+            if ((password== "") || (email == "")) {
                 alert("nevyplene pole login ,nebo pole heslo")
 
             } else {
-                console.log(userName+""+password);
+                console.log(email+""+password);
                 var dataBody = new FormData();
-                dataBody.append('userName', userName);
+                dataBody.append('email', email);
                 dataBody.append('password', password);
 
                 var config = {
                     method: 'post',
-                    url: "http://127.0.0.1:8080/editPassword",
+                    url: ''+url+'editPassword',
                     headers: {
                         //...data.getHeaders()
                     },
@@ -199,7 +199,7 @@
             }
         }
 
-       async function reload() {
+        function reload() {
            document.getElementById("empolees").innerHTML = "";
           // document.getElementById("empolees").innerHTML = "";
            const listEmployees = [];

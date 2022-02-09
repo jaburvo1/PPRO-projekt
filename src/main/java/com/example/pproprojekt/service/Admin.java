@@ -41,21 +41,6 @@ public class Admin {
         return employee;
     }
 
-    public Employee findUserByUseName(String userName)
-    {
-        //zde nastava pravděpodobne chby
-        listEmployee=new ArrayList<>();
-        listEmployee = emploeeyRepo.findAll();
-
-        for(Employee em: listEmployee){
-            if(em.getUserName().equals(userName)){
-                System.out.println(em.getUserName());
-
-                return em;
-            }
-        }
-        return null;
-    }
     public Employee findUserByEmail(String email){
         listEmployee=new ArrayList<>();
         listEmployee = emploeeyRepo.findAll();
@@ -72,11 +57,11 @@ public class Admin {
         return employee;
     }
 
-    public Object editUserRole(String userName, int newRole) {
+    public Object editUserRole(String email, int newRole) {
 
-        System.out.println("login: "+userName+"role: "+newRole);
+        System.out.println("login: "+email+"role: "+newRole);
 
-        employee = findUserByUseName(userName);
+        employee = findUserByEmail(email);
         System.out.println(employee.getUserName());
         if(employee!=null) {
             //emploeeyRepo.delete(employee);
@@ -90,21 +75,20 @@ public class Admin {
         return employee;
     }
 
-    public Object editPassword(String userName, String password) {
-        System.out.println("login: "+userName+"heslo: "+ password);
+    public Object editPassword(String email, String password) {
 
-        employee = findUserByUseName(userName);
+
+        employee = findUserByEmail(email);
         System.out.println(employee.getUserName());
         if(employee!=null) {
             //emploeeyRepo.delete(employee);
             employee.setPassword(password);
-            emploeeyRepo.save(employee);
-            //aktualizaci user
+            emploeeyRepo.save(employee);//aktualizae user
+
         }
         else {
             System.out.println("chybne user name");
         }
-
         return employee;
     }
 
