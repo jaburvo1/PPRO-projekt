@@ -37,7 +37,7 @@
 
         };
         async function   addReklamace() {
-            var kodReklamace = document.getElementById("kodReklamace").value;
+            const kodReklamace = document.getElementById("kodReklamace").value;
             const popisReklamace = document.getElementById("popisReklamace").value;
             const datumVytvoreni = document.getElementById("datumVytvoreni").value;
             if((kodReklamace=="")||(popisReklamace=="")||(datumVytvoreni=="")){
@@ -404,7 +404,15 @@
             document.getElementById("kodReklamace").value=reklamaceCopy
         }
 
-
+        function reloadForm(){
+            document.getElementById("kodReklamace").value="";
+            document.getElementById("popisReklamace").value="";
+            document.getElementById("infoReklamace").value="";
+            document.getElementById("telefon").value="";
+            document.getElementById("email").value="";
+            document.getElementById("datumVytvoreni").value="";
+            document.getElementById("datumVyreseni").value="";
+        }
 
 </script>
 
@@ -457,7 +465,7 @@
     <input type="text" id="klientPole" name="klientPole"/>
     <br/>
     <button onclick="submit()">ok</button>
-    <button type="reset" id="delete" name="delete">vymaž</button>
+    <button onclick="reloadForm()">vymaž</button>
     <a href="/logout">Odhlaseni</a>
 
     <br/>

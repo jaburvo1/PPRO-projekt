@@ -1,39 +1,19 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.5.5</version>
         <relativePath/>
-        <!--  lookup parent from repository  -->
+        <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
     <artifactId>PPRO-Spring</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>PPRO-Spring</name>
     <description>PPRO-Spring</description>
-    <properties>
-        <java.version>11</java.version>
-    </properties>
-    <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-        <persistence-unit name="JPA_DEMO">
-            <class>com.agis.livedb.domain.AddressEntity</class>
-            <class>com.agis.livedb.domain.TrafficCameraEntity</class>
-            <class>com.agis.livedb.domain.TrafficPhotoEntity</class>
-            <class>com.agis.livedb.domain.TrafficReportEntity</class>
-            <properties>
-                <property name="toplink.logging.level" value="FINE"/>
-                <property name="toplink.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-                <!--  update to match database -->
-                <property name="toplink.jdbc.url" value="jdbc:oracle:thin:@ora1.uhk.cz:1521:orcl;create=true"/>
-                <!--  update to match database -->
-                <property name="toplink.jdbc.user" value="alfa"/>
-                <!--  update to match database -->
-                <property name="toplink.jdbc.password" value="alfabeta"/>
-                <!--  update to match database -->
-            </properties>
-        </persistence-unit>
-    </persistence>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -42,7 +22,7 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-            <version>2.2.6.RELEASE</version>
+
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -59,49 +39,34 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <!--
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.9.1</version>
         </dependency>
         <dependency>
             <groupId>javax.enterprise</groupId>
             <artifactId>cdi-api</artifactId>
-            <version>1.0</version>
         </dependency>
+        -->
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-jpa</artifactId>
-            <version>2.5.6</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-relational</artifactId>
-            <version>2.2.6</version>
         </dependency>
+       <!--
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+        </dependency>
+        -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>21.5.0.0</version>
         </dependency>
     </dependencies>
-    <servlet>
-        <servlet-name>SimpleProjectServlet</servlet-name>
-        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-        <init-param>
-            <param-name>contextConfigLocation</param-name>
-            <param-value> /WEB-INF/config/SimpleProjectServlet-servlet.xml </param-value>
-        </init-param>
-        <load-on-startup>1</load-on-startup>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>SimpleProjectServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-    <beans>
-        <bean id="editUser" class="com.example.pproprojekt.Controller">
-            <property name="editUser" value="edditUser value"/>
-        </bean>
-    </beans>
 </project>

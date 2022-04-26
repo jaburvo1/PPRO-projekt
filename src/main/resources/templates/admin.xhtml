@@ -265,6 +265,14 @@
                items.appendChild(item);
            }*/
        }
+       function reloadForm(){
+           document.getElementById("login").value="";
+           document.getElementById("email").value="";
+           document.getElementById("telefon").value="";
+           document.getElementById("password").value="";
+           document.getElementById("firstName").value="";
+           document.getElementById("lastName").value="";
+       }
 
     </script>
 </head>
@@ -310,7 +318,7 @@
     <input type="radio" id="editRole" name="akceTyp" class="akceTyp" value="rkelamace"/>
     <br/>
     <button onclick="submit()">ok</button>
-    <button type="reset" id="delete" name="delete" >vymaž</button>
+    <button onclick="reloadForm()" >vymaž</button>
 <a href="/logout">Odhlaseni</a>
     <br/>
     <input type="text" id="status" name="status" disabled="disabled"/>
