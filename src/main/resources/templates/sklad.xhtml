@@ -222,6 +222,14 @@
                     console.log(error);
                 });
         }
+        function reloadForm(){
+            document.getElementById("login").value="";
+            document.getElementById("email").value="";
+            document.getElementById("telefon").value="";
+            document.getElementById("password").value="";
+            document.getElementById("firstName").value="";
+            document.getElementById("lastName").value="";
+        }
 
     </script>
 </head>
@@ -258,7 +266,7 @@
     <input type="radio" id="vyskladnitDil" name="skladDil" class="skladDil" value="vyskladnit"/>
     <br/>
     <button type="button" id="ok" name="ok" ondblclick="submit()">ok</button>
-    <button type="reset" id="delete" name="delete" >vymaž</button>
+    <button onclick="reloadForm()">vymaž</button>
     <a href="/logout">Odhlaseni</a>
     <br></br>
     <input type="text" id="status" name="status" disabled="disabled"/>

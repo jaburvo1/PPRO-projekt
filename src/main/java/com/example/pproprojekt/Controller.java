@@ -44,6 +44,23 @@ public class Controller {
 
         return modelAndView;
     }
+    @RequestMapping(value = "/loginApp", method = RequestMethod.POST)
+    public int login(@RequestParam("userEmail") String email, @RequestParam("userPassword") String password) {
+
+
+        System.out.println("ok");
+        System.out.println(password);
+        System.out.println(email);
+        Employee employee = login.login(email, password);
+        if(employee!=null)
+        {
+            role = employee.getRole();
+        }
+        else {
+            role =0;
+        }
+        return role;
+    }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ModelAndView login(Model model, @RequestParam("userEmail") String email,
@@ -110,7 +127,12 @@ public class Controller {
             return modelAndView;
         }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/logoutApp", method = RequestMethod.GET)
+    public void logout() {
+        role = 0;
+    }
+
+        @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(Model model) {
         role=0;
         userId=-1;
