@@ -129,6 +129,7 @@ public class Controller {
 
     @RequestMapping(value = "/logoutApp", method = RequestMethod.GET)
     public void logout() {
+        System.out.println("ok");
         role = 0;
     }
 
