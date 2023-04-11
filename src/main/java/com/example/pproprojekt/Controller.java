@@ -8,7 +8,9 @@ import com.example.pproprojekt.service.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -411,7 +413,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/removeItemPieceApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JSONObject removeItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) throws JSONException {
+    public ResponseEntity<JSONObject> removeItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) throws JSONException {
         String statusText="";
         Depot rezult= (Depot) depot.findAll(namePart);
 
@@ -429,7 +431,9 @@ public class Controller {
         }
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("statusText", statusText);
-        return jsonObj;
+
+        ResponseEntity<JSONObject> response = new ResponseEntity<JSONObject>(jsonObj, HttpStatus.OK);
+        return response;
 
     }
     @RequestMapping(value = "/klientList", method = RequestMethod.GET)
