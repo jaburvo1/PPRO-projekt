@@ -5,6 +5,8 @@ import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
 import com.example.pproprojekt.service.*;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -128,9 +130,10 @@ public class Controller {
         }
 
     @RequestMapping(value = "/logoutApp", method = RequestMethod.GET)
-    public void logout() {
+    public int logout() {
         System.out.println("ok");
         role = 0;
+        return role;
     }
 
         @RequestMapping(value = "/logout", method = RequestMethod.GET)
@@ -328,6 +331,28 @@ public class Controller {
        return statusText;
     }
 
+    @RequestMapping(value = "/addItemApp", method = RequestMethod.POST)
+    public JSONObject addItemApp(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
+                                 @RequestParam("nazevdilu") String namePart, @RequestParam("parametryDilu") String parametrsPart, @RequestParam("vyrobceDilu") String manufacturePart,
+                                 @RequestParam("pocetKusu") int countPart) throws JSONException {
+
+        String statusText = "";
+        Object rezult = depot.addPart(namePart, typePart, subtypePart, parametrsPart, manufacturePart, countPart);
+        if(rezult==null){
+            statusText="ne pridan novy dill";
+        }
+        else {
+            statusText="pridan novy dill";
+        }
+
+
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("statusText", statusText);
+        return jsonObj;
+    }
+
+
+
     @RequestMapping(value = "/addItemPiece", method = RequestMethod.POST)
     public String addItemPiece(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
     ) {
@@ -342,6 +367,24 @@ public class Controller {
             statusText="dil naskladnen";
         }
         return statusText;
+    }
+
+    @RequestMapping(value = "/addItemPieceApp", method = RequestMethod.POST)
+    public JSONObject addItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
+    ) throws JSONException {
+
+        String statusText="";
+        Object rezult= depot.addPiecePart(namePart, countPart);
+
+        if(rezult!=null){
+            statusText="dil ne naskladnen";
+        }
+        else {
+            statusText="dil naskladnen";
+        }
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("statusText", statusText);
+        return jsonObj;
     }
 
 
@@ -364,6 +407,29 @@ public class Controller {
         }
 
         return statusText;
+    }
+
+    @RequestMapping(value = "/removeItemPieceApp", method = RequestMethod.POST)
+    public JSONObject removeItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) throws JSONException {
+        String statusText="";
+        Depot rezult= (Depot) depot.findAll(namePart);
+
+        if(rezult==null){
+            statusText="nazev dilui neni evidenci skladu";
+        }
+        else {
+            if(rezult.getCountPart()>=countPart) {
+                depot.removePiecePart(namePart, countPart);
+                statusText = "dil vyskladnen";
+            }
+            else {
+                statusText = "dil ne vyskladnen";
+            }
+        }
+        JSONObject jsonObj = new JSONObject();
+        jsonObj.put("statusText", statusText);
+        return jsonObj;
+
     }
     @RequestMapping(value = "/klientList", method = RequestMethod.GET)
     public List<Client> clientView(){

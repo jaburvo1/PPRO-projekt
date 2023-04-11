@@ -52,12 +52,12 @@
         }
         async function   novyDill(){
             var dataBody = new FormData();
-            dataBody.append('druhDilu', '"RAM"');
-            dataBody.append('typDilu', '"DDR4"');
-            dataBody.append('parametryDilu', '"16GB"');
-            dataBody.append('vyrobceDilu', '"vyrobce"');
-            dataBody.append('pocetKusu', '100');
-            dataBody.append('nazevdilu', 'RAM');
+            dataBody.append('druhDilu', document.getElementById("druhDilu").value);
+            dataBody.append('typDilu', document.getElementById("typDilu").value);
+            dataBody.append('parametryDilu', document.getElementById("parametryDilu").value);
+            dataBody.append('vyrobceDilu', document.getElementById("vyrobceDilu").value);
+            dataBody.append('pocetKusu', document.getElementById("pocetKusu").value);
+            dataBody.append('nazevdilu', document.getElementById("nazevDilu").value);
 
             var config = {
                 method: 'post',
