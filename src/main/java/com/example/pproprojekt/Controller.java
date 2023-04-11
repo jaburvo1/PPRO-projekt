@@ -8,6 +8,7 @@ import com.example.pproprojekt.service.*;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -331,7 +332,7 @@ public class Controller {
        return statusText;
     }
 
-    @RequestMapping(value = "/addItemApp", method = RequestMethod.POST)
+    @RequestMapping(value = "/addItemApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject addItemApp(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
                                  @RequestParam("nazevdilu") String namePart, @RequestParam("parametryDilu") String parametrsPart, @RequestParam("vyrobceDilu") String manufacturePart,
                                  @RequestParam("pocetKusu") int countPart) throws JSONException {
@@ -369,7 +370,7 @@ public class Controller {
         return statusText;
     }
 
-    @RequestMapping(value = "/addItemPieceApp", method = RequestMethod.POST)
+    @RequestMapping(value = "/addItemPieceApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject addItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
     ) throws JSONException {
 
@@ -409,7 +410,7 @@ public class Controller {
         return statusText;
     }
 
-    @RequestMapping(value = "/removeItemPieceApp", method = RequestMethod.POST)
+    @RequestMapping(value = "/removeItemPieceApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public JSONObject removeItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart) throws JSONException {
         String statusText="";
         Depot rezult= (Depot) depot.findAll(namePart);
