@@ -6,7 +6,6 @@ import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
 import com.example.pproprojekt.service.*;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.ui.Model;
@@ -335,9 +334,9 @@ public class Controller {
     }
 
     @RequestMapping(value = "/addItemApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JSONObject addItemApp(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
-                                 @RequestParam("nazevdilu") String namePart, @RequestParam("parametryDilu") String parametrsPart, @RequestParam("vyrobceDilu") String manufacturePart,
-                                 @RequestParam("pocetKusu") int countPart) throws JSONException {
+    public Map<String, String> addItemApp(Model model, @RequestParam("druhDilu") String typePart, @RequestParam("typDilu") String subtypePart,
+                                          @RequestParam("nazevdilu") String namePart, @RequestParam("parametryDilu") String parametrsPart, @RequestParam("vyrobceDilu") String manufacturePart,
+                                          @RequestParam("pocetKusu") int countPart) throws JSONException {
 
         String statusText = "";
         Object rezult = depot.addPart(namePart, typePart, subtypePart, parametrsPart, manufacturePart, countPart);
@@ -348,10 +347,13 @@ public class Controller {
             statusText="pridan novy dill";
         }
 
-
+/*
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("statusText", statusText);
         return jsonObj;
+        */
+        return Collections.singletonMap("response", statusText);
+
     }
 
 
@@ -373,7 +375,7 @@ public class Controller {
     }
 
     @RequestMapping(value = "/addItemPieceApp", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public JSONObject addItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
+    public Map<String, String> addItemPieceApp(Model model, @RequestParam("nazevdilu") String namePart, @RequestParam("pocetKusu") int countPart
     ) throws JSONException {
 
         String statusText="";
@@ -385,9 +387,11 @@ public class Controller {
         else {
             statusText="dil naskladnen";
         }
+        /*
         JSONObject jsonObj = new JSONObject();
         jsonObj.put("statusText", statusText);
-        return jsonObj;
+        return jsonObj;*/
+        return Collections.singletonMap("response", statusText);
     }
 
 
