@@ -224,7 +224,7 @@ public class Controller {
         }
         return partList;
     }
-    @RequestMapping(value = "/partsApp", method = RequestMethod.GET)
+    @RequestMapping(value = "/depotPartsAppp", method = RequestMethod.GET)
     public String depotParts() {
         List<Depot> partList=new ArrayList<>();
         if(role==2) {
