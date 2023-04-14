@@ -5,6 +5,7 @@ import com.example.pproprojekt.entity.Complaint;
 import com.example.pproprojekt.entity.Depot;
 import com.example.pproprojekt.entity.Employee;
 import com.example.pproprojekt.service.*;
+import com.google.gson.Gson;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -223,6 +224,16 @@ public class Controller {
         }
         return partList;
     }
+    @RequestMapping(value = "/partsApp", method = RequestMethod.GET)
+    public String depotParts() {
+        List<Depot> partList=new ArrayList<>();
+        if(role==2) {
+            partList = depot.getAllPart();
+        }
+        String partListJson = new Gson().toJson(partList);
+        return partListJson;
+    }
+
 
     @RequestMapping(value = "/novyUzivatel", method = RequestMethod.POST)
     public String addUser(Model model, @RequestParam("userName") String userName,
