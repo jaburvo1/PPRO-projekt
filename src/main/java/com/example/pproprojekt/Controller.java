@@ -376,7 +376,7 @@ public class Controller {
         String statusText="";
         Object rezult= depot.addPiecePart(namePart, countPart);
 
-        if(rezult!=null){
+        if(rezult==null){
             statusText="dil ne naskladnen";
         }
         else {
@@ -392,7 +392,7 @@ public class Controller {
         String statusText="";
         Object rezult= depot.addPiecePart(namePart, countPart);
 
-        if(rezult!=null){
+        if(rezult==null){
             statusText="dil ne naskladnen";
         }
         else {
